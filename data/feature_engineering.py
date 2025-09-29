@@ -115,7 +115,7 @@ class FeatureEngineer:
         X, y = [], []
         
         for i in range(sequence_length, len(df)):
-            X.append(df.iloc[i-sequence_length:i].values)
+            X.append(df.iloc[i-sequence_length:i].drop(columns=[target_column]).values)
             y.append(df.iloc[i][target_column])
         
         return np.array(X), np.array(y)

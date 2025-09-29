@@ -1,6 +1,5 @@
-# models/train_model.py
 """
-LSTM Model Training Pipeline
+LSTM Model Training Pipeline - FIXED with DEBUG
 """
 import os
 import json
@@ -42,45 +41,76 @@ class StockPredictor:
         client = YahooFinanceClient()
         df = client.fetch_stock_data(symbol, period=period)
         
+        print(f"🔍 RAW DATA COLUMNS: {list(df.columns)}")
+        print(f"🔍 RAW DATA SHAPE: {df.shape}")
+        
         # 2. Feature engineering
         engineer = FeatureEngineer()
         df = engineer.add_technical_indicators(df)
+        
+        print(f"\n🔍 AFTER FEATURE ENGINEERING:")
+        print(f"   Columns: {list(df.columns)}")
+        print(f"   Shape: {df.shape}")
         
         # 3. NaN temizle
         df = df.dropna()
         print(f"✅ Clean data shape: {df.shape}")
         
-        # 4. Target'ı ayır
-        target = df['Close'].values.reshape(-1, 1)
-        features = df.drop(['Close'], axis=1).values
+        # 4. CRITICAL: Target'ı ayır VE feature columns'ı kaydet
+        target_col = 'Close'
+        
+        # Target'ı ayır
+        target = df[target_col].values.reshape(-1, 1)
+        
+        # Features'ı al (Close hariç)
+        features_df = df.drop([target_col], axis=1)
+        
+        # IMPORTANT: Feature columns'ı BU NOKTADA kaydet
+        feature_columns = list(features_df.columns)
+        
+        print(f"\n🎯 TARGET: {target_col}")
+        print(f"📋 FEATURE COLUMNS ({len(feature_columns)}):")
+        for i, col in enumerate(feature_columns, 1):
+            print(f"   {i}. {col}")
+        
+        features = features_df.values
         
         # 5. Scaling
         features_scaled = self.feature_scaler.fit_transform(features)
         target_scaled = self.target_scaler.fit_transform(target)
         
         # 6. Scaled dataframe oluştur
-        df_scaled = pd.DataFrame(features_scaled, columns=df.drop(['Close'], axis=1).columns)
+        df_scaled = pd.DataFrame(features_scaled, columns=feature_columns)
         df_scaled['Close'] = target_scaled
         
         # 7. Sequences oluştur
         X, y = engineer.create_sequences(df_scaled, self.sequence_length)
         
-        print(f"✅ Sequences created: X{X.shape}, y{y.shape}")
+        print(f"\n✅ Sequences created:")
+        print(f"   X shape: {X.shape}")
+        print(f"   y shape: {y.shape}")
+        print(f"   Features per timestep: {X.shape[2]}")
         
         # 8. Train/test split
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, shuffle=False  # Time series için shuffle=False
+            X, y, test_size=0.2, shuffle=False
         )
         
-        print(f"✅ Train: {X_train.shape}, Test: {X_test.shape}")
+        print(f"\n✅ Split complete:")
+        print(f"   Train: X={X_train.shape}, y={y_train.shape}")
+        print(f"   Test:  X={X_test.shape}, y={y_test.shape}")
         
-        return X_train, X_test, y_train, y_test
+        return X_train, X_test, y_train, y_test, feature_columns
     
     def build_model(self, input_shape):
         """LSTM model oluştur"""
         print(f"\n{'='*50}")
         print(f"🏗️ BUILDING MODEL")
         print(f"{'='*50}\n")
+        
+        print(f"📐 Input shape: {input_shape}")
+        print(f"   Sequence length: {input_shape[0]}")
+        print(f"   Features: {input_shape[1]}")
         
         model = Sequential([
             # LSTM Layer 1
@@ -185,7 +215,7 @@ class StockPredictor:
         
         return metrics
     
-    def save_artifacts(self, symbol, metrics):
+    def save_artifacts(self, symbol, metrics, feature_columns):
         """Model ve metadata'yı kaydet"""
         print(f"\n{'='*50}")
         print(f"💾 SAVING ARTIFACTS")
@@ -194,7 +224,7 @@ class StockPredictor:
         artifacts_dir = 'models/artifacts'
         os.makedirs(artifacts_dir, exist_ok=True)
         
-        # 1. Model (.h5)
+        # 1. Model (.keras)
         model_path = f'{artifacts_dir}/stock_predictor_v1.keras'
         self.model.save(model_path)
         print(f"✅ Model saved: {model_path}")
@@ -207,12 +237,22 @@ class StockPredictor:
             pickle.dump(self.target_scaler, f)
         print(f"✅ Scalers saved")
         
-        # 3. Metadata (.json)
+        # 3. Feature columns (.json) - CRITICAL
+        print(f"\n🔍 SAVING FEATURE COLUMNS:")
+        print(f"   Count: {len(feature_columns)}")
+        print(f"   Columns: {feature_columns}")
+        
+        with open(f'{artifacts_dir}/feature_columns.json', 'w') as f:
+            json.dump(feature_columns, f, indent=2)
+        print(f"✅ Feature columns saved")
+        
+        # 4. Metadata (.json)
         metadata = {
             'model_version': 'v1.0.0',
             'trained_on': datetime.now().isoformat(),
             'symbol': symbol,
             'sequence_length': self.sequence_length,
+            'feature_count': len(feature_columns),  # ADDED
             'model_format': 'keras',
             'architecture': {
                 'type': 'LSTM',
@@ -233,12 +273,18 @@ class StockPredictor:
             json.dump(metadata, f, indent=2)
         print(f"✅ Metadata saved")
         
-        # 4. Performance metrics (.json)
+        # 5. Performance metrics (.json)
         with open(f'{artifacts_dir}/model_performance.json', 'w') as f:
             json.dump(metrics, f, indent=2)
         print(f"✅ Performance metrics saved")
         
         print(f"\n🎉 All artifacts saved successfully!")
+        print(f"\n{'='*50}")
+        print(f"📋 FINAL SUMMARY")
+        print(f"{'='*50}")
+        print(f"Model expects: {len(feature_columns)} features")
+        print(f"Feature list saved to: feature_columns.json")
+        print(f"{'='*50}\n")
 
 
 def main():
@@ -258,7 +304,7 @@ def main():
     predictor = StockPredictor(sequence_length=SEQUENCE_LENGTH)
     
     # 1. Prepare data
-    X_train, X_test, y_train, y_test = predictor.prepare_data(SYMBOL, PERIOD)
+    X_train, X_test, y_train, y_test, feature_columns = predictor.prepare_data(SYMBOL, PERIOD)
     
     # 2. Build model
     input_shape = (X_train.shape[1], X_train.shape[2])
@@ -271,7 +317,7 @@ def main():
     metrics = predictor.evaluate(X_test, y_test)
     
     # 5. Save
-    predictor.save_artifacts(SYMBOL, metrics)
+    predictor.save_artifacts(SYMBOL, metrics, feature_columns)
     
     print(f"\n{'='*60}")
     print(f"✅ TRAINING COMPLETED SUCCESSFULLY!")
