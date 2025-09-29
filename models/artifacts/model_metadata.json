@@ -1,0 +1,48 @@
+{
+  "model_version": "v1.0.0",
+  "trained_on": "2025-09-29T11:04:23.925476",
+  "symbol": "AAPL",
+  "sequence_length": 60,
+  "model_format": "keras",
+  "architecture": {
+    "type": "LSTM",
+    "layers": [
+      {
+        "type": "LSTM",
+        "units": 50,
+        "return_sequences": true
+      },
+      {
+        "type": "Dropout",
+        "rate": 0.2
+      },
+      {
+        "type": "LSTM",
+        "units": 50,
+        "return_sequences": true
+      },
+      {
+        "type": "Dropout",
+        "rate": 0.2
+      },
+      {
+        "type": "LSTM",
+        "units": 50,
+        "return_sequences": false
+      },
+      {
+        "type": "Dropout",
+        "rate": 0.2
+      },
+      {
+        "type": "Dense",
+        "units": 25,
+        "activation": "relu"
+      },
+      {
+        "type": "Dense",
+        "units": 1
+      }
+    ]
+  }
+}
