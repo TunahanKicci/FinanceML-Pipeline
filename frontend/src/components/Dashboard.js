@@ -1,11 +1,13 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { predictStock, getModelStatus, healthCheck } from '../services/api';
+import { predictStock, getModelStatus, healthCheck, forecastStock } from '../services/api';
 import './Dashboard.css';
+import ForecastChart from './ForecastChart';
 
 const Dashboard = () => {
+  const [forecastData, setForecastData] = useState(null);
+  const [forecastDays] = useState(14); // sadece okunacak
   const [symbol, setSymbol] = useState('AAPL');
-  const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [modelStatus, setModelStatus] = useState(null);
@@ -17,6 +19,23 @@ const Dashboard = () => {
     'META', 'NVDA', 'JPM', 'V', 'WMT'
   ];
 
+  const handleForecast = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await forecastStock(symbol, forecastDays);
+      console.log("Forecast API raw response:", result);
+
+      setForecastData(result); // artık result.forecast.dates ve result.forecast.prices var
+    } catch (err) {
+      console.error("Forecast API error:", err);
+      setError(err.message || 'Forecast failed');
+    } finally {
+      setLoading(false);
+    }
+  };
   // Component mount olduğunda sistem durumunu kontrol et
   useEffect(() => {
     checkSystemStatus();
@@ -33,22 +52,7 @@ const Dashboard = () => {
     }
   };
 
-  const handlePredict = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setPrediction(null);
-
-    try {
-      const result = await predictStock(symbol);
-      setPrediction(result);
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Prediction failed');
-      console.error('Prediction error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   const getTrendColor = (trend) => {
     if (trend === 'UP') return '#10b981';
@@ -87,7 +91,7 @@ const Dashboard = () => {
         <div className="card prediction-form-card">
           <h2>Stock Price Prediction</h2>
           
-          <form onSubmit={handlePredict} className="prediction-form">
+          <form onSubmit={handleForecast} className="prediction-form">
             <div className="form-group">
               <label htmlFor="symbol">Stock Symbol</label>
               <input
@@ -106,9 +110,10 @@ const Dashboard = () => {
               className="predict-button"
               disabled={loading || !symbol}
             >
-              {loading ? 'Predicting...' : 'Predict Price'}
+              {loading ? 'Forecasting...' : `Forecast ${forecastDays} Days`}
             </button>
           </form>
+          
 
           {/* Popular Stocks */}
           <div className="popular-stocks">
@@ -134,75 +139,9 @@ const Dashboard = () => {
             </div>
           )}
         </div>
+        
 
-        {/* Prediction Results */}
-        {prediction && (
-          <div className="card prediction-results-card">
-            <h2>Prediction Results</h2>
-            
-            <div className="results-grid">
-              <div className="result-item">
-                <span className="result-label">Symbol</span>
-                <span className="result-value symbol-value">
-                  {prediction.symbol}
-                </span>
-              </div>
-
-              <div className="result-item">
-                <span className="result-label">Current Price</span>
-                <span className="result-value">
-                  ${prediction.current_price.toFixed(2)}
-                </span>
-              </div>
-
-              <div className="result-item">
-                <span className="result-label">Predicted Price</span>
-                <span className="result-value predicted-price">
-                  ${prediction.predicted_price.toFixed(2)}
-                </span>
-              </div>
-
-              <div className="result-item">
-                <span className="result-label">Price Change</span>
-                <span 
-                  className="result-value"
-                  style={{ color: getTrendColor(prediction.trend) }}
-                >
-                  {getTrendIcon(prediction.trend)} ${Math.abs(prediction.price_change).toFixed(2)}
-                  ({prediction.price_change_pct > 0 ? '+' : ''}{prediction.price_change_pct.toFixed(2)}%)
-                </span>
-              </div>
-
-              <div className="result-item">
-                <span className="result-label">Trend</span>
-                <span 
-                  className="result-value trend-badge"
-                  style={{ 
-                    backgroundColor: getTrendColor(prediction.trend),
-                    color: 'white',
-                    padding: '4px 12px',
-                    borderRadius: '12px',
-                    fontSize: '14px'
-                  }}
-                >
-                  {prediction.trend}
-                </span>
-              </div>
-
-              <div className="result-item">
-                <span className="result-label">Prediction Date</span>
-                <span className="result-value">
-                  {prediction.prediction_date}
-                </span>
-              </div>
-            </div>
-
-            <div className="prediction-disclaimer">
-              This is an AI prediction and should not be considered as financial advice.
-              Always do your own research before making investment decisions.
-            </div>
-          </div>
-        )}
+        
 
         {/* Model Info */}
         {modelStatus && (
@@ -242,6 +181,13 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+      
+      {forecastData && (
+  <div className="card">
+    <h2>{forecastData.symbol} - {forecastDays}-Day Forecast</h2>
+    <ForecastChart forecastData={forecastData} />
+  </div>
+)}
 
       {/* Footer */}
       <footer className="dashboard-footer">

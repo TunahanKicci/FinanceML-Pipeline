@@ -21,12 +21,25 @@ export const getModelStatus = async () => {
   return response.data;
 };
 
-export const predictStock = async (symbol, daysAhead = 1) => {
-  const response = await api.post('/predict', {
-    symbol: symbol.toUpperCase(),
-    days_ahead: daysAhead,
-  });
-  return response.data;
+
+
+export const forecastStock = async (symbol, days = 14) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/forecast`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ symbol, days }),
+      }
+    );
+    if (!response.ok) throw new Error("Forecast request failed");
+    return await response.json();
+  } catch (err) {
+    throw err;
+  }
 };
+
+
 
 export default api;
