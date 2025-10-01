@@ -23,6 +23,7 @@ from fastapi import HTTPException
 from data.processors.fundamental_processor import FundamentalProcessor
 from data.sources.yahoo_finance import YahooFinanceClient
 from fastapi import APIRouter
+from data.sources.sentiment_analyzer import SentimentAnalyzer
 
 
 # Logging
@@ -51,7 +52,7 @@ app.add_middleware(
 # Global service instance
 prediction_service = None
 forecasting_service = None
-
+sentiment_analyzer = None
 
 # Pydantic Models
 class PredictionRequest(BaseModel):
@@ -151,20 +152,45 @@ async def get_financials(symbol: str):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 
+
+
 # Startup event
 @app.on_event("startup")
 async def startup_event():
-    global prediction_service, forecasting_service
+    global prediction_service, forecasting_service , sentiment_analyzer
     
     logger.info("🚀 Starting FinanceML API...")
     
     try:
         prediction_service = PredictionService()
         forecasting_service = ForecastingService()
+        sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key="96195a56e9224ebf8d25d17d42ec3ba9")
         logger.info("✅ Services initialized")
     except Exception as e:
         logger.error(f"❌ Failed to initialize: {str(e)}")
         raise
+
+@app.get("/sentiment/{symbol}")
+async def get_sentiment(symbol: str, days: int = 7):
+    if sentiment_analyzer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+
+    try:
+        result = sentiment_analyzer.analyze_stock_sentiment(
+            symbol.upper(),
+            days=days
+        )
+
+        if result.get('error'):
+            raise HTTPException(status_code=404, detail=result['error'])
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Sentiment analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Sentiment analysis failed")
 
 
 # Health check

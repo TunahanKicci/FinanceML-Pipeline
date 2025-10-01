@@ -1,9 +1,11 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { getModelStatus, healthCheck, forecastStock, getFinancials } from '../services/api';
+import { getModelStatus, healthCheck, forecastStock, getFinancials, getSentiment } from '../services/api';
 import './Dashboard.css';
 import ForecastChart from './ForecastChart';
 import FinancialMetrics from './FinancialMetrics';
+import SentimentCard from './SentimentCard';
+
 
 const Dashboard = () => {
   const [forecastData, setForecastData] = useState(null);
@@ -14,6 +16,8 @@ const Dashboard = () => {
   const [modelStatus, setModelStatus] = useState(null);
   const [systemHealth, setSystemHealth] = useState(null);
   const [financialData, setFinancialData] = useState(null);
+  const [sentimentData, setSentimentData] = useState(null);
+
 
   // Popüler hisse senetleri
   const popularStocks = [
@@ -28,7 +32,16 @@ const Dashboard = () => {
   } catch (err) {
     console.error('Failed to fetch financials:', err);
   }
-};
+  };
+
+  const fetchSentiment = async (symbol) => {
+  try {
+    const data = await getSentiment(symbol);
+    setSentimentData(data);
+  } catch (err) {
+    console.error('Failed to fetch sentiment:', err);
+  }
+ };
 
 
   const handleForecast = async (e) => {
@@ -44,6 +57,8 @@ const Dashboard = () => {
         setForecastData(result);
         // Finansal verileri de çek
         await fetchFinancials(symbol);
+        await fetchSentiment(symbol);  // Sentiment ekle
+
       }
 
       setForecastData(result); // artık result.forecast.dates ve result.forecast.prices var
@@ -223,6 +238,12 @@ const getTrendIcon = (trend) => {
     {financialData && (
       <div className="card financial-card">
         <FinancialMetrics financialData={financialData} />
+      </div>
+    )}
+
+    {sentimentData && (
+      <div className="card sentiment-card" style={{ marginTop: "20px" }}>
+        <SentimentCard sentimentData={sentimentData} />
       </div>
     )}
   </>

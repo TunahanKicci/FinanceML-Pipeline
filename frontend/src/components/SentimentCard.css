@@ -1,0 +1,274 @@
+/* frontend/src/components/SentimentCard.css */
+.sentiment-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sentiment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.sentiment-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #1f2937;
+}
+
+.news-count {
+  padding: 6px 12px;
+  background: #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Overall Sentiment */
+.sentiment-overall {
+  margin-bottom: 30px;
+}
+
+.sentiment-score-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.sentiment-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sentiment-circle-inner {
+  width: 110px;
+  height: 110px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sentiment-emoji {
+  font-size: 36px;
+  margin-bottom: 5px;
+}
+
+.sentiment-score-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.sentiment-details {
+  flex: 1;
+}
+
+.sentiment-details h3 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+.sentiment-confidence {
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.sentiment-stats {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Sentiment Bar */
+.sentiment-bar {
+  display: flex;
+  height: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  background: #e5e7eb;
+}
+
+.sentiment-bar-fill {
+  transition: width 0.5s ease;
+}
+
+.very-negative {
+  background: #991b1b;
+}
+
+.negative {
+  background: #ef4444;
+}
+
+.neutral {
+  background: #6b7280;
+}
+
+.positive {
+  background: #3b82f6;
+}
+
+.very-positive {
+  background: #10b981;
+}
+
+/* Distribution Legend */
+.distribution-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.very-negative-color { background: #991b1b; }
+.negative-color { background: #ef4444; }
+.neutral-color { background: #6b7280; }
+.positive-color { background: #3b82f6; }
+.very-positive-color { background: #10b981; }
+
+/* Statistics */
+.sentiment-statistics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.stat-value.positive {
+  color: #10b981;
+}
+
+.stat-value.negative {
+  color: #ef4444;
+}
+
+/* Recent News */
+.recent-news h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.news-item {
+  padding: 15px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.news-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.news-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.news-sentiment-emoji {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.news-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.news-title:hover {
+  color: #667eea;
+  text-decoration: underline;
+}
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 13px;
+  color: #6b7280;
+  padding-left: 30px;
+}
+
+.news-publisher {
+  font-weight: 500;
+}
+
+.news-sentiment-label {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .sentiment-score-container {
+    flex-direction: column;
+  }
+  
+  .sentiment-statistics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

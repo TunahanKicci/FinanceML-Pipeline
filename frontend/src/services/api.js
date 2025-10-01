@@ -16,6 +16,11 @@ export const healthCheck = async () => {
   return response.data;
 };
 
+export const getSentiment = async (symbol, days = 7) => {
+  const response = await api.get(`/sentiment/${symbol}?days=${days}`);
+  return response.data;
+};  
+
 export const getModelStatus = async () => {
   const response = await api.get('/model/status');
   return response.data;
