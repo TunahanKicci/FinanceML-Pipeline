@@ -21,7 +21,10 @@ export const getModelStatus = async () => {
   return response.data;
 };
 
-
+export const getFinancials = async (symbol) => {
+  const response = await api.get(`/financials/${symbol}`);
+  return response.data;
+};
 
 export const forecastStock = async (symbol, days = 14) => {
   try {

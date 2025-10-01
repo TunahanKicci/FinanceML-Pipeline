@@ -247,6 +247,14 @@
   color: #1f2937;
 }
 
+.forecast-card {
+  margin-top: 20px; /* Forecast kart ile üstteki içerik arası */
+}
+
+.financial-card {
+  margin-top: 70px; /* Forecast grafiği ile FinancialMetrics tablosu arası */
+}
+
 /* Footer */
 .dashboard-footer {
   margin-top: 30px;

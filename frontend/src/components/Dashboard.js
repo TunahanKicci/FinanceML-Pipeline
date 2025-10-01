@@ -1,8 +1,9 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { predictStock, getModelStatus, healthCheck, forecastStock } from '../services/api';
+import { getModelStatus, healthCheck, forecastStock, getFinancials } from '../services/api';
 import './Dashboard.css';
 import ForecastChart from './ForecastChart';
+import FinancialMetrics from './FinancialMetrics';
 
 const Dashboard = () => {
   const [forecastData, setForecastData] = useState(null);
@@ -12,12 +13,23 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [modelStatus, setModelStatus] = useState(null);
   const [systemHealth, setSystemHealth] = useState(null);
+  const [financialData, setFinancialData] = useState(null);
 
   // Popüler hisse senetleri
   const popularStocks = [
     'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
     'META', 'NVDA', 'JPM', 'V', 'WMT'
   ];
+
+  const fetchFinancials = async (symbol) => {
+  try {
+    const data = await getFinancials(symbol);
+    setFinancialData(data);
+  } catch (err) {
+    console.error('Failed to fetch financials:', err);
+  }
+};
+
 
   const handleForecast = async (e) => {
     e.preventDefault();
@@ -27,6 +39,12 @@ const Dashboard = () => {
     try {
       const result = await forecastStock(symbol, forecastDays);
       console.log("Forecast API raw response:", result);
+
+      if (result) {
+        setForecastData(result);
+        // Finansal verileri de çek
+        await fetchFinancials(symbol);
+      }
 
       setForecastData(result); // artık result.forecast.dates ve result.forecast.prices var
     } catch (err) {
@@ -55,16 +73,16 @@ const Dashboard = () => {
   
 
   const getTrendColor = (trend) => {
-    if (trend === 'UP') return '#10b981';
-    if (trend === 'DOWN') return '#ef4444';
-    return '#6b7280';
-  };
+  if (trend.includes('UP')) return '#10b981';
+  if (trend.includes('DOWN')) return '#ef4444';
+  return '#6b7280';
+};
 
-  const getTrendIcon = (trend) => {
-    if (trend === 'UP') return '↑';
-    if (trend === 'DOWN') return '↓';
-    return '→';
-  };
+const getTrendIcon = (trend) => {
+  if (trend.includes('UP')) return '↑';
+  if (trend.includes('DOWN')) return '↓';
+  return '→';
+};
 
   return (
     <div className="dashboard">
@@ -183,10 +201,31 @@ const Dashboard = () => {
       </div>
       
       {forecastData && (
-  <div className="card">
-    <h2>{forecastData.symbol} - {forecastDays}-Day Forecast</h2>
-    <ForecastChart forecastData={forecastData} />
-  </div>
+  <>
+    <div className="card forecast-card">
+      <h2>
+        {forecastData.symbol} - {forecastDays}-Day Forecast
+        {forecastData.trend && (
+          <span 
+            style={{ 
+              marginLeft: '10px', 
+              color: getTrendColor(forecastData.trend),
+              fontWeight: '600'
+            }}
+          >
+            {getTrendIcon(forecastData.trend)} {forecastData.trend}
+          </span>
+        )}
+      </h2>
+      <ForecastChart forecastData={forecastData} />
+    </div>
+
+    {financialData && (
+      <div className="card financial-card">
+        <FinancialMetrics financialData={financialData} />
+      </div>
+    )}
+  </>
 )}
 
       {/* Footer */}
