@@ -12,6 +12,7 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+
 import pickle
 from datetime import datetime
 
@@ -20,13 +21,15 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from data.sources.yahoo_finance import YahooFinanceClient
 from data.feature_engineering import FeatureEngineer
+from data.processors.fundamental_processor import FundamentalProcessor
 
 
 class StockPredictor:
     """LSTM Stock Prediction Model"""
     
-    def __init__(self, sequence_length=60):
+    def __init__(self, sequence_length=60, use_fundamentals=True):
         self.sequence_length = sequence_length
+        self.use_fundamentals = use_fundamentals
         self.model = None
         self.feature_scaler = MinMaxScaler()
         self.target_scaler = MinMaxScaler()
@@ -44,6 +47,12 @@ class StockPredictor:
         print(f"🔍 RAW DATA COLUMNS: {list(df.columns)}")
         print(f"🔍 RAW DATA SHAPE: {df.shape}")
         
+        # 1,5. Fundamental data ekle (YENİ!)
+        if self.use_fundamentals:
+            fundamental_processor = FundamentalProcessor()
+            df = fundamental_processor.fetch_and_merge_fundamentals(symbol, df)
+            print(f"✅ Fundamental features added")
+
         # 2. Feature engineering
         engineer = FeatureEngineer()
         df = engineer.add_technical_indicators(df)
@@ -53,7 +62,8 @@ class StockPredictor:
         print(f"   Shape: {df.shape}")
         
         # 3. NaN temizle
-        df = df.dropna()
+        df = df.dropna(axis=1, how="all")  # tamamen boş sütunları sil
+        df = df.fillna(method="ffill").fillna(method="bfill")  # kalan eksikleri doldur
         print(f"✅ Clean data shape: {df.shape}")
         
         # 4. CRITICAL: Target'ı ayır VE feature columns'ı kaydet

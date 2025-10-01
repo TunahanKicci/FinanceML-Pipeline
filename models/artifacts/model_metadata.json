@@ -1,9 +1,9 @@
 {
   "model_version": "v1.0.0",
-  "trained_on": "2025-09-29T17:46:05.811385",
+  "trained_on": "2025-10-01T10:21:08.309391",
   "symbol": "AAPL",
   "sequence_length": 60,
-  "feature_count": 29,
+  "feature_count": 65,
   "model_format": "keras",
   "architecture": {
     "type": "LSTM",

@@ -11,10 +11,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, List
 import logging
+import json
 
 from models.model_loader import ModelLoader
 from data.sources.yahoo_finance import YahooFinanceClient
 from data.feature_engineering import FeatureEngineer
+from data.processors.fundamental_processor import FundamentalProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +28,7 @@ class ForecastingService:
         self.model_loader = ModelLoader()
         self.data_client = YahooFinanceClient()
         self.feature_engineer = FeatureEngineer()
-        
+        self.fundamental_processor = FundamentalProcessor()
         # Load model
         self.model_loader.load_all()
         self.sequence_length = self.model_loader.metadata.get("sequence_length", 60)
@@ -67,6 +69,15 @@ class ForecastingService:
             # 2. Feature engineering
             df_features = self.feature_engineer.add_technical_indicators(df)
             df_features = df_features.dropna()
+
+            df_features = self.fundamental_processor.fetch_and_merge_fundamentals(symbol, df_features)
+
+            # 2,5. Senkronizasyon
+            with open("models/artifacts/feature_columns.json", "r") as f:
+                feature_columns = json.load(f)
+
+            df_features = df_features[feature_columns + ["Close"]]
+            
             
             if len(df_features) < self.sequence_length:
                 raise ValueError(f"Not enough data. Need {self.sequence_length}, got {len(df_features)}")
