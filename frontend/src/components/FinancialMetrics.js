@@ -29,7 +29,7 @@ const FinancialMetrics = ({ financialData }) => {
     if (percentage >= 80) return '#10b981';
     if (percentage >= 60) return '#3b82f6';
     if (percentage >= 40) return '#f59e0b';
-    return '#ef4444';
+    return financialData.financial_score.color || '#6b7280';
   };
 
   return (

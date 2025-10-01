@@ -93,6 +93,236 @@ def safe_float(val):
         return float(val)
     return val
 
+def calculate_financial_score(metrics: dict) -> dict:
+    """
+    Calculate dynamic financial health score based on actual metrics
+    
+    Scoring breakdown:
+    - Valuation (25 points)
+    - Profitability (25 points)
+    - Financial Health (25 points)
+    - Growth (25 points)
+    """
+    score = 0
+    max_score = 100
+    factors = []
+    
+    # ========== VALUATION (25 points) ==========
+    
+    # P/E Ratio (10 points)
+    pe = metrics.get('pe_ratio')
+    if pe is not None and pe > 0:
+        if 10 < pe < 20:
+            score += 10
+            factors.append("Ideal P/E ratio")
+        elif 5 < pe < 30:
+            score += 7
+            factors.append("Good P/E ratio")
+        elif pe < 40:
+            score += 4
+            factors.append("Fair P/E ratio")
+        else:
+            score += 2
+            factors.append("High P/E ratio")
+    
+    # PEG Ratio (8 points)
+    peg = metrics.get('peg_ratio')
+    if peg is not None and peg > 0:
+        if peg < 1:
+            score += 8
+            factors.append("Undervalued (PEG < 1)")
+        elif peg < 1.5:
+            score += 6
+            factors.append("Fair valuation (PEG < 1.5)")
+        elif peg < 2:
+            score += 3
+            factors.append("Slightly overvalued")
+    
+    # Price to Book (7 points)
+    pb = metrics.get('price_to_book')
+    if pb is not None and pb > 0:
+        if pb < 1:
+            score += 7
+            factors.append("Trading below book value")
+        elif pb < 3:
+            score += 5
+            factors.append("Reasonable P/B ratio")
+        elif pb < 5:
+            score += 3
+            factors.append("Moderate P/B ratio")
+    
+    # ========== PROFITABILITY (25 points) ==========
+    
+    # Profit Margin (10 points)
+    profit_margin = metrics.get('profit_margin')
+    if profit_margin is not None:
+        if profit_margin > 0.20:
+            score += 10
+            factors.append("Excellent profit margin (>20%)")
+        elif profit_margin > 0.15:
+            score += 8
+            factors.append("Strong profit margin (>15%)")
+        elif profit_margin > 0.10:
+            score += 6
+            factors.append("Good profit margin (>10%)")
+        elif profit_margin > 0.05:
+            score += 3
+            factors.append("Moderate profit margin")
+        elif profit_margin > 0:
+            score += 1
+    
+    # ROE (Return on Equity) (10 points)
+    roe = metrics.get('roe')
+    if roe is not None:
+        if roe > 0.20:
+            score += 10
+            factors.append("Outstanding ROE (>20%)")
+        elif roe > 0.15:
+            score += 8
+            factors.append("Excellent ROE (>15%)")
+        elif roe > 0.10:
+            score += 6
+            factors.append("Good ROE (>10%)")
+        elif roe > 0.05:
+            score += 3
+            factors.append("Fair ROE")
+    
+    # Operating Margin (5 points)
+    op_margin = metrics.get('operating_margin')
+    if op_margin is not None:
+        if op_margin > 0.15:
+            score += 5
+            factors.append("Strong operating margin")
+        elif op_margin > 0.10:
+            score += 3
+        elif op_margin > 0.05:
+            score += 1
+    
+    # ========== FINANCIAL HEALTH (25 points) ==========
+    
+    # Current Ratio (8 points)
+    current_ratio = metrics.get('current_ratio')
+    if current_ratio is not None:
+        if current_ratio > 2:
+            score += 8
+            factors.append("Excellent liquidity (CR > 2)")
+        elif current_ratio > 1.5:
+            score += 6
+            factors.append("Good liquidity (CR > 1.5)")
+        elif current_ratio > 1:
+            score += 4
+            factors.append("Adequate liquidity")
+        elif current_ratio > 0.5:
+            score += 1
+    
+    # Debt to Equity (12 points)
+    de = metrics.get('debt_to_equity')
+    if de is not None:
+        if de < 0.3:
+            score += 12
+            factors.append("Very low debt (D/E < 0.3)")
+        elif de < 0.5:
+            score += 10
+            factors.append("Low debt (D/E < 0.5)")
+        elif de < 1.0:
+            score += 7
+            factors.append("Moderate debt (D/E < 1.0)")
+        elif de < 2.0:
+            score += 3
+            factors.append("High debt level")
+        else:
+            score += 1
+            factors.append("Very high debt")
+    
+    # Quick Ratio (5 points)
+    quick_ratio = metrics.get('quick_ratio')
+    if quick_ratio is not None:
+        if quick_ratio > 1.5:
+            score += 5
+            factors.append("Strong quick ratio")
+        elif quick_ratio > 1:
+            score += 3
+        elif quick_ratio > 0.5:
+            score += 1
+    
+    # ========== GROWTH (25 points) ==========
+    
+    # Revenue Growth (13 points)
+    rev_growth = metrics.get('revenue_growth')
+    if rev_growth is not None:
+        if rev_growth > 0.20:
+            score += 13
+            factors.append("Exceptional revenue growth (>20%)")
+        elif rev_growth > 0.15:
+            score += 11
+            factors.append("Strong revenue growth (>15%)")
+        elif rev_growth > 0.10:
+            score += 8
+            factors.append("Good revenue growth (>10%)")
+        elif rev_growth > 0.05:
+            score += 5
+            factors.append("Moderate revenue growth")
+        elif rev_growth > 0:
+            score += 2
+            factors.append("Slow revenue growth")
+    
+    # Earnings Growth (12 points)
+    earnings_growth = metrics.get('earnings_growth')
+    if earnings_growth is not None:
+        if earnings_growth > 0.20:
+            score += 12
+            factors.append("Exceptional earnings growth (>20%)")
+        elif earnings_growth > 0.15:
+            score += 10
+            factors.append("Strong earnings growth (>15%)")
+        elif earnings_growth > 0.10:
+            score += 7
+            factors.append("Good earnings growth (>10%)")
+        elif earnings_growth > 0.05:
+            score += 4
+            factors.append("Moderate earnings growth")
+        elif earnings_growth > 0:
+            score += 2
+    
+    # ========== RATING ==========
+    
+    percentage = (score / max_score) * 100
+    
+    if percentage >= 90:
+        rating = "Exceptional"
+        interpretation = "Outstanding financial health across all metrics"
+        color = "#10b981"
+    elif percentage >= 75:
+        rating = "Excellent"
+        interpretation = "Strong financial fundamentals with minor concerns"
+        color = "#3b82f6"
+    elif percentage >= 60:
+        rating = "Good"
+        interpretation = "Solid financial position with some areas for improvement"
+        color = "#8b5cf6"
+    elif percentage >= 45:
+        rating = "Fair"
+        interpretation = "Mixed financial indicators, requires careful analysis"
+        color = "#f59e0b"
+    elif percentage >= 30:
+        rating = "Poor"
+        interpretation = "Weak fundamentals with significant risks"
+        color = "#ef4444"
+    else:
+        rating = "Critical"
+        interpretation = "Severe financial concerns, high investment risk"
+        color = "#991b1b"
+    
+    return {
+        "score": int(score),
+        "max_score": max_score,
+        "percentage": round(percentage, 1),
+        "rating": rating,
+        "interpretation": interpretation,
+        "color": color,
+        "key_factors": factors[:8]  # Top 8 factors
+    }
+
 @app.get("/financials/{symbol}")
 async def get_financials(symbol: str):
     """
@@ -136,14 +366,7 @@ async def get_financials(symbol: str):
         }
 
         # Mock financial score (opsiyonel: gerçek algoritma ile hesaplanabilir)
-        financial_score = {
-            "score": 85,
-            "max_score": 100,
-            "percentage": 85 / 100,
-            "rating": "Excellent",
-            "interpretation": "Strong financial health",
-            "key_factors": ["High ROE", "Low Debt", "Consistent Revenue Growth"]
-        }
+        financial_score = calculate_financial_score(metrics)
 
         return JSONResponse(content={"metrics": metrics, "financial_score": financial_score})
 
