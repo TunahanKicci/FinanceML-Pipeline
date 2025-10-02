@@ -25,6 +25,7 @@ from data.sources.yahoo_finance import YahooFinanceClient
 from fastapi import APIRouter
 from data.sources.sentiment_analyzer import SentimentAnalyzer
 from data.processors.risk_analyzer import RiskAnalyzer
+from api.database.simple_db import db
 
 # Logging
 logging.basicConfig(
@@ -514,6 +515,25 @@ async def forecast_multi_day(request: ForecastRequest):
             days=min(request.days, 30),
             include_weekends=request.include_weekends
         )
+
+        # Save to database
+        try:
+            db.save_prediction(
+                symbol=result['symbol'],
+                prediction_type='multi_day',
+                prediction_date=result['forecast']['dates'][-1],
+                current_price=result['current_price'],
+                predicted_price=result['final_predicted_price'],
+                forecast_days=result['forecast_days'],
+                trend=result['trend'],
+                prediction_data={
+                    'forecast': result['forecast'],
+                    'statistics': result['statistics']
+                }
+            )
+        except Exception as e:
+            logger.warning(f"Failed to save prediction: {e}")
+
         return result
         
     except ValueError as e:
@@ -521,6 +541,7 @@ async def forecast_multi_day(request: ForecastRequest):
     except Exception as e:
         logger.error(f"Forecast error: {str(e)}")
         raise HTTPException(status_code=500, detail="Forecast failed")
+    
 
 
 

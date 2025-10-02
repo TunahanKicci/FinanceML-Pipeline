@@ -26,6 +26,8 @@ export const getRiskAnalysis = async (symbol) => {
   return response.data;
 };
 
+
+
 export const getModelStatus = async () => {
   const response = await api.get('/model/status');
   return response.data;
