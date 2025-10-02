@@ -1,11 +1,11 @@
 // src/components/Dashboard.js
 import React, { useState, useEffect } from 'react';
-import { getModelStatus, healthCheck, forecastStock, getFinancials, getSentiment } from '../services/api';
+import { getModelStatus, healthCheck, forecastStock, getFinancials, getSentiment, getRiskAnalysis } from '../services/api';
 import './Dashboard.css';
 import ForecastChart from './ForecastChart';
 import FinancialMetrics from './FinancialMetrics';
 import SentimentCard from './SentimentCard';
-
+import RiskAnalysis from './RiskAnalysis';
 
 const Dashboard = () => {
   const [forecastData, setForecastData] = useState(null);
@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [systemHealth, setSystemHealth] = useState(null);
   const [financialData, setFinancialData] = useState(null);
   const [sentimentData, setSentimentData] = useState(null);
-
+  const [riskData, setRiskData] = useState(null);
 
   // Popüler hisse senetleri
   const popularStocks = [
@@ -43,6 +43,17 @@ const Dashboard = () => {
   }
  };
 
+  const fetchRiskAnalysis = async (symbol) => {
+    try {
+      const data = await getRiskAnalysis(symbol);
+      setRiskData(data);
+    } catch (err) {
+      console.error('Failed to fetch risk analysis:', err);
+    }
+  };
+  
+
+
 
   const handleForecast = async (e) => {
     e.preventDefault();
@@ -58,6 +69,7 @@ const Dashboard = () => {
         // Finansal verileri de çek
         await fetchFinancials(symbol);
         await fetchSentiment(symbol);  // Sentiment ekle
+        await fetchRiskAnalysis(symbol);
 
       }
 
@@ -240,6 +252,12 @@ const getTrendIcon = (trend) => {
         <FinancialMetrics financialData={financialData} />
       </div>
     )}
+
+    {riskData && (
+  <div className="card" style={{ marginTop: "20px" }}>
+    <RiskAnalysis riskData={riskData} />
+  </div>
+)}
 
     {sentimentData && (
       <div className="card sentiment-card" style={{ marginTop: "20px" }}>

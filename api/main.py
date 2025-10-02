@@ -24,7 +24,7 @@ from data.processors.fundamental_processor import FundamentalProcessor
 from data.sources.yahoo_finance import YahooFinanceClient
 from fastapi import APIRouter
 from data.sources.sentiment_analyzer import SentimentAnalyzer
-
+from data.processors.risk_analyzer import RiskAnalyzer
 
 # Logging
 logging.basicConfig(
@@ -53,6 +53,7 @@ app.add_middleware(
 prediction_service = None
 forecasting_service = None
 sentiment_analyzer = None
+risk_analyzer = None
 
 # Pydantic Models
 class PredictionRequest(BaseModel):
@@ -380,7 +381,7 @@ async def get_financials(symbol: str):
 # Startup event
 @app.on_event("startup")
 async def startup_event():
-    global prediction_service, forecasting_service , sentiment_analyzer
+    global prediction_service, forecasting_service , sentiment_analyzer, risk_analyzer
     
     logger.info("🚀 Starting FinanceML API...")
     
@@ -388,6 +389,7 @@ async def startup_event():
         prediction_service = PredictionService()
         forecasting_service = ForecastingService()
         sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key="96195a56e9224ebf8d25d17d42ec3ba9")
+        risk_analyzer = RiskAnalyzer()
         logger.info("✅ Services initialized")
     except Exception as e:
         logger.error(f"❌ Failed to initialize: {str(e)}")
@@ -414,6 +416,25 @@ async def get_sentiment(symbol: str, days: int = 7):
     except Exception as e:
         logger.error(f"Sentiment analysis error: {str(e)}")
         raise HTTPException(status_code=500, detail="Sentiment analysis failed")
+
+
+@app.get("/risk/{symbol}")
+async def get_risk_analysis(symbol: str):
+    """
+    Get comprehensive risk analysis
+    
+    - **symbol**: Stock symbol
+    """
+    if risk_analyzer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        result = risk_analyzer.analyze_risk(symbol.upper())
+        return result
+        
+    except Exception as e:
+        logger.error(f"Risk analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Risk analysis failed")
 
 
 # Health check
