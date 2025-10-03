@@ -23,7 +23,6 @@
   "Earnings_Growth",
   "EPS",
   "Book_Value_Per_Share",
-  "Dividend_Yield",
   "Payout_Ratio",
   "Total_Assets",
   "Total_Liabilities",
@@ -63,15 +62,5 @@
   "HL_Range",
   "HL_Pct",
   "Gap",
-  "ATR",
-  "symbol_AAPL",
-  "symbol_AMZN",
-  "symbol_GOOGL",
-  "symbol_JPM",
-  "symbol_META",
-  "symbol_MSFT",
-  "symbol_NVDA",
-  "symbol_TSLA",
-  "symbol_V",
-  "symbol_WMT"
+  "ATR"
 ]

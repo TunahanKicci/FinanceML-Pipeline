@@ -1,5 +1,5 @@
 // frontend/src/components/ForecastChart.js
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,

@@ -1,5 +1,6 @@
 """
-LSTM Model Training Pipeline - FIXED with DEBUG
+LSTM Model Training Pipeline - Per Stock Strategy
+Her hisse için ayrı model eğitimi
 """
 import os
 import json
@@ -25,7 +26,7 @@ from data.processors.fundamental_processor import FundamentalProcessor
 
 
 class StockPredictor:
-    """LSTM Stock Prediction Model"""
+    """LSTM Stock Prediction Model - Single Stock"""
     
     def __init__(self, sequence_length=60, use_fundamentals=True):
         self.sequence_length = sequence_length
@@ -34,82 +35,53 @@ class StockPredictor:
         self.feature_scaler = MinMaxScaler()
         self.target_scaler = MinMaxScaler()
         
-    def prepare_data(self, symbol="AAPL", period="2y"):
-        """Veriyi hazırla"""
+    def prepare_data(self, symbol, period="2y"):
+        """Tek hisse için veriyi hazırla"""
         print(f"\n{'='*50}")
-        print(f"📊 PREPARING DATA FOR {symbol}")
+        print(f"📊 PREPARING DATA FOR: {symbol}")
         print(f"{'='*50}\n")
-        
-        # 1. Veri çek
+
         client = YahooFinanceClient()
         df = client.fetch_stock_data(symbol, period=period)
-        
-        print(f"🔍 RAW DATA COLUMNS: {list(df.columns)}")
-        print(f"🔍 RAW DATA SHAPE: {df.shape}")
-        
-        # 1,5. Fundamental data ekle (YENİ!)
-        if self.use_fundamentals:
-            fundamental_processor = FundamentalProcessor()
-            df = fundamental_processor.fetch_and_merge_fundamentals(symbol, df)
-            print(f"✅ Fundamental features added")
 
-        # 2. Feature engineering
+        # Fundamental data ekle
+        if self.use_fundamentals:
+            fproc = FundamentalProcessor()
+            df = fproc.fetch_and_merge_fundamentals(symbol, df)
+            print("✅ Fundamental features added")
+
+        # Feature engineering
         engineer = FeatureEngineer()
         df = engineer.add_technical_indicators(df)
-        
-        print(f"\n🔍 AFTER FEATURE ENGINEERING:")
-        print(f"   Columns: {list(df.columns)}")
-        print(f"   Shape: {df.shape}")
-        
-        # 3. NaN temizle
-        df = df.dropna(axis=1, how="all")  # tamamen boş sütunları sil
-        df = df.fillna(method="ffill").fillna(method="bfill")  # kalan eksikleri doldur
-        print(f"✅ Clean data shape: {df.shape}")
-        
-        # 4. CRITICAL: Target'ı ayır VE feature columns'ı kaydet
-        target_col = 'Close'
-        
-        # Target'ı ayır
+
+        # NaN temizle
+        df = df.dropna(axis=1, how="all")
+        df = df.fillna(method="ffill").fillna(method="bfill")
+
+        target_col = "Close"
         target = df[target_col].values.reshape(-1, 1)
-        
-        # Features'ı al (Close hariç)
         features_df = df.drop([target_col], axis=1)
-        
-        # IMPORTANT: Feature columns'ı BU NOKTADA kaydet
+
         feature_columns = list(features_df.columns)
-        
+
         print(f"\n🎯 TARGET: {target_col}")
-        print(f"📋 FEATURE COLUMNS ({len(feature_columns)}):")
-        for i, col in enumerate(feature_columns, 1):
-            print(f"   {i}. {col}")
-        
+        print(f"📋 FEATURE COUNT: {len(feature_columns)}")
+
         features = features_df.values
-        
-        # 5. Scaling
+
+        # Scaling
         features_scaled = self.feature_scaler.fit_transform(features)
         target_scaled = self.target_scaler.fit_transform(target)
-        
-        # 6. Scaled dataframe oluştur
+
         df_scaled = pd.DataFrame(features_scaled, columns=feature_columns)
-        df_scaled['Close'] = target_scaled
-        
-        # 7. Sequences oluştur
+        df_scaled["Close"] = target_scaled
+
         X, y = engineer.create_sequences(df_scaled, self.sequence_length)
-        
-        print(f"\n✅ Sequences created:")
-        print(f"   X shape: {X.shape}")
-        print(f"   y shape: {y.shape}")
-        print(f"   Features per timestep: {X.shape[2]}")
-        
-        # 8. Train/test split
+
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, shuffle=False
         )
-        
-        print(f"\n✅ Split complete:")
-        print(f"   Train: X={X_train.shape}, y={y_train.shape}")
-        print(f"   Test:  X={X_test.shape}, y={y_test.shape}")
-        
+
         return X_train, X_test, y_train, y_test, feature_columns
     
     def build_model(self, input_shape):
@@ -150,14 +122,15 @@ class StockPredictor:
         self.model = model
         return model
     
-    def train(self, X_train, y_train, X_test, y_test, epochs=50, batch_size=32):
+    def train(self, X_train, y_train, X_test, y_test, symbol, epochs=50, batch_size=32):
         """Model'i eğit"""
         print(f"\n{'='*50}")
-        print(f"🚀 TRAINING MODEL")
+        print(f"🚀 TRAINING MODEL FOR {symbol}")
         print(f"{'='*50}\n")
 
-        # Artifacts klasörünü oluştur
-        os.makedirs('models/artifacts', exist_ok=True)
+        # Symbol-specific artifacts klasörü
+        artifacts_dir = f'models/artifacts/{symbol}'
+        os.makedirs(artifacts_dir, exist_ok=True)
         
         # Callbacks
         early_stop = EarlyStopping(
@@ -167,7 +140,7 @@ class StockPredictor:
         )
         
         checkpoint = ModelCheckpoint(
-            'models/artifacts/best_model.keras',
+            f'{artifacts_dir}/best_model.keras',
             monitor='val_loss',
             save_best_only=True,
             verbose=1
@@ -228,14 +201,14 @@ class StockPredictor:
     def save_artifacts(self, symbol, metrics, feature_columns):
         """Model ve metadata'yı kaydet"""
         print(f"\n{'='*50}")
-        print(f"💾 SAVING ARTIFACTS")
+        print(f"💾 SAVING ARTIFACTS FOR {symbol}")
         print(f"{'='*50}\n")
         
-        artifacts_dir = 'models/artifacts'
+        artifacts_dir = f'models/artifacts/{symbol}'
         os.makedirs(artifacts_dir, exist_ok=True)
         
         # 1. Model (.keras)
-        model_path = f'{artifacts_dir}/stock_predictor_v1.keras'
+        model_path = f'{artifacts_dir}/{symbol}_model.keras'
         self.model.save(model_path)
         print(f"✅ Model saved: {model_path}")
         
@@ -247,14 +220,10 @@ class StockPredictor:
             pickle.dump(self.target_scaler, f)
         print(f"✅ Scalers saved")
         
-        # 3. Feature columns (.json) - CRITICAL
-        print(f"\n🔍 SAVING FEATURE COLUMNS:")
-        print(f"   Count: {len(feature_columns)}")
-        print(f"   Columns: {feature_columns}")
-        
+        # 3. Feature columns (.json)
         with open(f'{artifacts_dir}/feature_columns.json', 'w') as f:
             json.dump(feature_columns, f, indent=2)
-        print(f"✅ Feature columns saved")
+        print(f"✅ Feature columns saved ({len(feature_columns)} features)")
         
         # 4. Metadata (.json)
         metadata = {
@@ -262,7 +231,8 @@ class StockPredictor:
             'trained_on': datetime.now().isoformat(),
             'symbol': symbol,
             'sequence_length': self.sequence_length,
-            'feature_count': len(feature_columns),  # ADDED
+            'feature_count': len(feature_columns),
+            'use_fundamentals': self.use_fundamentals,
             'model_format': 'keras',
             'architecture': {
                 'type': 'LSTM',
@@ -276,7 +246,8 @@ class StockPredictor:
                     {'type': 'Dense', 'units': 25, 'activation': 'relu'},
                     {'type': 'Dense', 'units': 1}
                 ]
-            }
+            },
+            'metrics': metrics
         }
         
         with open(f'{artifacts_dir}/model_metadata.json', 'w') as f:
@@ -288,49 +259,119 @@ class StockPredictor:
             json.dump(metrics, f, indent=2)
         print(f"✅ Performance metrics saved")
         
-        print(f"\n🎉 All artifacts saved successfully!")
-        print(f"\n{'='*50}")
-        print(f"📋 FINAL SUMMARY")
-        print(f"{'='*50}")
-        print(f"Model expects: {len(feature_columns)} features")
-        print(f"Feature list saved to: feature_columns.json")
-        print(f"{'='*50}\n")
+        print(f"\n🎉 All artifacts saved to: {artifacts_dir}")
+
+
+def train_single_stock(symbol, period="5y", sequence_length=60, epochs=50, batch_size=32, use_fundamentals=True):
+    """Tek hisse için training pipeline"""
+    print(f"\n{'='*60}")
+    print(f"🤖 TRAINING MODEL FOR: {symbol}")
+    print(f"{'='*60}\n")
+    
+    try:
+        # Initialize
+        predictor = StockPredictor(sequence_length=sequence_length, use_fundamentals=use_fundamentals)
+        
+        # 1. Prepare data
+        X_train, X_test, y_train, y_test, feature_columns = predictor.prepare_data(symbol, period)
+        
+        # 2. Build model
+        input_shape = (X_train.shape[1], X_train.shape[2])
+        predictor.build_model(input_shape)
+        
+        # 3. Train
+        history = predictor.train(X_train, y_train, X_test, y_test, symbol, epochs, batch_size)
+        
+        # 4. Evaluate
+        metrics = predictor.evaluate(X_test, y_test)
+        
+        # 5. Save
+        predictor.save_artifacts(symbol, metrics, feature_columns)
+        
+        print(f"\n{'='*60}")
+        print(f"✅ {symbol} TRAINING COMPLETED!")
+        print(f"   R² Score: {metrics['r2']:.4f}")
+        print(f"   MAPE: {metrics['mape']:.2f}%")
+        print(f"{'='*60}\n")
+        
+        return True, metrics
+        
+    except Exception as e:
+        print(f"\n{'='*60}")
+        print(f"❌ ERROR TRAINING {symbol}: {str(e)}")
+        print(f"{'='*60}\n")
+        return False, None
 
 
 def main():
-    """Ana training pipeline"""
+    """Ana training pipeline - Tüm hisseler için"""
     print(f"\n{'='*60}")
-    print(f"🤖 STOCK PREDICTION MODEL TRAINING")
+    print(f"🚀 MULTI-STOCK TRAINING PIPELINE")
+    print(f"   Strategy: Separate Model Per Stock")
     print(f"{'='*60}\n")
     
     # Configuration
-    SYMBOL = "AAPL"  # Apple stock
-    PERIOD = "2y"     # 2 years of data
-    SEQUENCE_LENGTH = 60  # 60 days lookback
+    SYMBOLS = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", 
+               "META", "NVDA", "JPM", "V", "WMT"]
+    PERIOD = "5y"
+    SEQUENCE_LENGTH = 60
     EPOCHS = 50
     BATCH_SIZE = 32
+    USE_FUNDAMENTALS = True
     
-    # Initialize
-    predictor = StockPredictor(sequence_length=SEQUENCE_LENGTH)
+    # Training summary
+    results = {}
     
-    # 1. Prepare data
-    X_train, X_test, y_train, y_test, feature_columns = predictor.prepare_data(SYMBOL, PERIOD)
+    for i, symbol in enumerate(SYMBOLS, 1):
+        print(f"\n{'#'*60}")
+        print(f"# STOCK {i}/{len(SYMBOLS)}: {symbol}")
+        print(f"{'#'*60}")
+        
+        success, metrics = train_single_stock(
+            symbol=symbol,
+            period=PERIOD,
+            sequence_length=SEQUENCE_LENGTH,
+            epochs=EPOCHS,
+            batch_size=BATCH_SIZE,
+            use_fundamentals=USE_FUNDAMENTALS
+        )
+        
+        results[symbol] = {
+            'success': success,
+            'metrics': metrics
+        }
     
-    # 2. Build model
-    input_shape = (X_train.shape[1], X_train.shape[2])
-    predictor.build_model(input_shape)
+    # Final Summary
+    print(f"\n\n{'='*60}")
+    print(f"📊 TRAINING SUMMARY")
+    print(f"{'='*60}\n")
     
-    # 3. Train
-    history = predictor.train(X_train, y_train, X_test, y_test, EPOCHS, BATCH_SIZE)
+    successful = [s for s, r in results.items() if r['success']]
+    failed = [s for s, r in results.items() if not r['success']]
     
-    # 4. Evaluate
-    metrics = predictor.evaluate(X_test, y_test)
+    print(f"✅ Successful: {len(successful)}/{len(SYMBOLS)}")
+    print(f"❌ Failed: {len(failed)}/{len(SYMBOLS)}")
     
-    # 5. Save
-    predictor.save_artifacts(SYMBOL, metrics, feature_columns)
+    if successful:
+        print(f"\n📈 Performance Summary:")
+        print(f"{'Symbol':<10} {'R²':<10} {'MAPE':<10} {'RMSE':<10}")
+        print(f"{'-'*40}")
+        
+        for symbol in successful:
+            m = results[symbol]['metrics']
+            print(f"{symbol:<10} {m['r2']:<10.4f} {m['mape']:<10.2f} {m['rmse']:<10.2f}")
+    
+    if failed:
+        print(f"\n❌ Failed stocks: {', '.join(failed)}")
+    
+    # Save overall summary
+    summary_path = 'models/artifacts/training_summary.json'
+    with open(summary_path, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"\n💾 Summary saved to: {summary_path}")
     
     print(f"\n{'='*60}")
-    print(f"✅ TRAINING COMPLETED SUCCESSFULLY!")
+    print(f"🎉 TRAINING PIPELINE COMPLETED!")
     print(f"{'='*60}\n")
 
 

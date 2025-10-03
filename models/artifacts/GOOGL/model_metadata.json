@@ -1,20 +1,10 @@
 {
   "model_version": "v1.0.0",
-  "trained_on": "2025-10-03T14:22:02.999472",
-  "symbol": [
-    "AAPL",
-    "MSFT",
-    "GOOGL",
-    "AMZN",
-    "TSLA",
-    "META",
-    "NVDA",
-    "JPM",
-    "V",
-    "WMT"
-  ],
+  "trained_on": "2025-10-03T16:55:58.699199",
+  "symbol": "GOOGL",
   "sequence_length": 60,
-  "feature_count": 75,
+  "feature_count": 65,
+  "use_fundamentals": true,
   "model_format": "keras",
   "architecture": {
     "type": "LSTM",
@@ -56,5 +46,12 @@
         "units": 1
       }
     ]
+  },
+  "metrics": {
+    "mse": 86.43089903887208,
+    "rmse": 9.296821985973061,
+    "mae": 7.2228331247965505,
+    "r2": 0.8572654373722379,
+    "mape": 3.753433197483045
   }
 }
