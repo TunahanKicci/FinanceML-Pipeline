@@ -2,131 +2,131 @@
   "AAPL": {
     "success": true,
     "metrics": {
-      "return_mae": 0.010551903227077124,
-      "return_rmse": 0.014694546461538617,
-      "return_r2": -0.019727748889340146,
-      "directional_accuracy_pct": 41.23711340206185,
-      "price_mae": 2.306231798669973,
-      "price_rmse": 3.222284632719154,
-      "price_mape_pct": 1.0462707971216094,
-      "price_r2": 0.9685671074049974
+      "return_mae": 0.010576408343861969,
+      "return_rmse": 0.014765433600775634,
+      "return_r2": -0.029589902515741784,
+      "directional_accuracy_pct": 53.608247422680414,
+      "price_mae": 2.308282918912089,
+      "price_rmse": 3.2280601633748085,
+      "price_mape_pct": 1.0512569753393404,
+      "price_r2": 0.968454327591603
     }
   },
   "MSFT": {
     "success": true,
     "metrics": {
-      "return_mae": 0.007914296094126156,
-      "return_rmse": 0.01051950237428273,
-      "return_r2": -0.22650957397000004,
-      "directional_accuracy_pct": 46.391752577319586,
-      "price_mae": 3.9419019365848618,
-      "price_rmse": 5.2560385409142185,
-      "price_mape_pct": 0.7870189127528598,
-      "price_r2": 0.9390179397938055
+      "return_mae": 0.0074220562882401295,
+      "return_rmse": 0.010071976511158919,
+      "return_r2": -0.12437183764518744,
+      "directional_accuracy_pct": 49.48453608247423,
+      "price_mae": 3.7019436424286893,
+      "price_rmse": 5.047656172046145,
+      "price_mape_pct": 0.738193516576321,
+      "price_r2": 0.9437575100294149
     }
   },
   "GOOGL": {
     "success": true,
     "metrics": {
-      "return_mae": 0.0116074902499723,
-      "return_rmse": 0.016663288403650577,
-      "return_r2": -0.04321683418617717,
-      "directional_accuracy_pct": 61.855670103092784,
-      "price_mae": 2.263513191298777,
-      "price_rmse": 3.3239349664111204,
-      "price_mape_pct": 1.1458202045642714,
-      "price_r2": 0.9863122006515787
+      "return_mae": 0.011800954206330354,
+      "return_rmse": 0.016947893019280413,
+      "return_r2": -0.07915645052571829,
+      "directional_accuracy_pct": 48.45360824742268,
+      "price_mae": 2.2972482444271787,
+      "price_rmse": 3.3856841463216782,
+      "price_mape_pct": 1.1644970922721178,
+      "price_r2": 0.98579891710687
     }
   },
   "AMZN": {
     "success": true,
     "metrics": {
-      "return_mae": 0.011614716882098622,
-      "return_rmse": 0.016425998387286832,
-      "return_r2": -0.018138978718859056,
-      "directional_accuracy_pct": 49.48453608247423,
-      "price_mae": 2.576755121209816,
-      "price_rmse": 3.6896825027967104,
-      "price_mape_pct": 1.1637064880706725,
-      "price_r2": 0.840996764154978
+      "return_mae": 0.011817055684100184,
+      "return_rmse": 0.016548146873127424,
+      "return_r2": -0.03333763338344031,
+      "directional_accuracy_pct": 41.23711340206185,
+      "price_mae": 2.621774916387288,
+      "price_rmse": 3.717986677472638,
+      "price_mape_pct": 1.1838833485474989,
+      "price_r2": 0.838547926222311
     }
   },
   "TSLA": {
     "success": true,
     "metrics": {
-      "return_mae": 0.025610470500832584,
-      "return_rmse": 0.03429175331239716,
-      "return_r2": -0.05370091005587563,
-      "directional_accuracy_pct": 50.51546391752577,
-      "price_mae": 8.823189503869136,
-      "price_rmse": 11.780414008102882,
-      "price_mape_pct": 2.579963901645374,
-      "price_r2": 0.9179331720944833
+      "return_mae": 0.025623237181118183,
+      "return_rmse": 0.03450644533861265,
+      "return_r2": -0.06693612367993773,
+      "directional_accuracy_pct": 48.45360824742268,
+      "price_mae": 8.8308899364415,
+      "price_rmse": 11.870402780322758,
+      "price_mape_pct": 2.573385395546575,
+      "price_r2": 0.9166745915601036
     }
   },
   "META": {
     "success": true,
     "metrics": {
-      "return_mae": 0.01255571467958949,
-      "return_rmse": 0.01827517135979223,
-      "return_r2": -0.00787807790382522,
-      "directional_accuracy_pct": 45.36082474226804,
-      "price_mae": 9.060874852867569,
-      "price_rmse": 13.039690525922007,
-      "price_mape_pct": 1.2436221548293827,
-      "price_r2": 0.8966850709369274
+      "return_mae": 0.01231042796920699,
+      "return_rmse": 0.018400601714630593,
+      "return_r2": -0.021760854026948717,
+      "directional_accuracy_pct": 53.608247422680414,
+      "price_mae": 8.867309305565367,
+      "price_rmse": 13.077436897385601,
+      "price_mape_pct": 1.2147345932779203,
+      "price_r2": 0.8960860604345285
     }
   },
   "NVDA": {
     "success": true,
     "metrics": {
-      "return_mae": 0.013399498794038678,
-      "return_rmse": 0.017290563670390283,
-      "return_r2": -0.008877352026495311,
-      "directional_accuracy_pct": 54.63917525773196,
-      "price_mae": 2.1869371248557954,
-      "price_rmse": 2.8344335488497507,
-      "price_mape_pct": 1.3328750527550632,
-      "price_r2": 0.9719650938451488
+      "return_mae": 0.01350546979121231,
+      "return_rmse": 0.01734463290703607,
+      "return_r2": -0.015196928374217933,
+      "directional_accuracy_pct": 59.79381443298969,
+      "price_mae": 2.205816699193547,
+      "price_rmse": 2.844202401152578,
+      "price_mape_pct": 1.3444945282138578,
+      "price_r2": 0.971771516683276
     }
   },
   "JPM": {
     "success": true,
     "metrics": {
-      "return_mae": 0.007785759710165318,
-      "return_rmse": 0.010279502289343696,
-      "return_r2": 0.00023215782302921095,
+      "return_mae": 0.007828925131971318,
+      "return_rmse": 0.0102537535588699,
+      "return_r2": 0.005234445086483519,
       "directional_accuracy_pct": 59.79381443298969,
-      "price_mae": 2.24594689950752,
-      "price_rmse": 2.982369624363958,
-      "price_mape_pct": 0.7799126257431428,
-      "price_r2": 0.9663058609480843
+      "price_mae": 2.256359003417772,
+      "price_rmse": 2.9684984951968283,
+      "price_mape_pct": 0.7834145754206415,
+      "price_r2": 0.9666185578444073
     }
   },
   "V": {
     "success": true,
     "metrics": {
-      "return_mae": 0.00972794473961046,
-      "return_rmse": 0.012817503891392584,
-      "return_r2": -0.03763079382835599,
-      "directional_accuracy_pct": 52.57731958762887,
-      "price_mae": 3.401077391536592,
-      "price_rmse": 4.515829748969728,
-      "price_mape_pct": 0.9762868319617861,
-      "price_r2": 0.7721797316275982
+      "return_mae": 0.00948115820139665,
+      "return_rmse": 0.013330008294395554,
+      "return_r2": -0.12226850508737286,
+      "directional_accuracy_pct": 50.51546391752577,
+      "price_mae": 3.324786286249374,
+      "price_rmse": 4.710167125110681,
+      "price_mape_pct": 0.9566946840626682,
+      "price_r2": 0.752149458257221
     }
   },
   "WMT": {
     "success": true,
     "metrics": {
-      "return_mae": 0.008892987114991565,
-      "return_rmse": 0.011957189118825937,
-      "return_r2": -0.16931473811581732,
-      "directional_accuracy_pct": 49.48453608247423,
-      "price_mae": 0.8795224336789372,
-      "price_rmse": 1.1921268206799933,
-      "price_mape_pct": 0.8929685787210598,
-      "price_r2": 0.8384672466424035
+      "return_mae": 0.009201985070676589,
+      "return_rmse": 0.012448833967842719,
+      "return_r2": -0.2674492435832254,
+      "directional_accuracy_pct": 52.57731958762887,
+      "price_mae": 0.909411819476685,
+      "price_rmse": 1.2392762796307197,
+      "price_mape_pct": 0.9244793413740479,
+      "price_r2": 0.8254370983730959
     }
   }
 }

@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T14:08:24.504818",
+  "trained_on": "2025-10-06T15:17:25.515251",
   "symbol": "MSFT",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.007914296094126156,
-    "return_rmse": 0.01051950237428273,
-    "return_r2": -0.22650957397000004,
-    "directional_accuracy_pct": 46.391752577319586,
-    "price_mae": 3.9419019365848618,
-    "price_rmse": 5.2560385409142185,
-    "price_mape_pct": 0.7870189127528598,
-    "price_r2": 0.9390179397938055
+    "return_mae": 0.0074220562882401295,
+    "return_rmse": 0.010071976511158919,
+    "return_r2": -0.12437183764518744,
+    "directional_accuracy_pct": 49.48453608247423,
+    "price_mae": 3.7019436424286893,
+    "price_rmse": 5.047656172046145,
+    "price_mape_pct": 0.738193516576321,
+    "price_r2": 0.9437575100294149
   },
   "prediction_type": "return"
 }

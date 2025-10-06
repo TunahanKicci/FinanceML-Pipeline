@@ -179,28 +179,32 @@ class StableStockPredictor:
         return metrics
 
     def save_artifacts(self, symbol, metrics, feature_columns):
+        """
+        Temiz artifact kaydetme - sadece sembol klasörüne kaydeder
+        Root-level'a gereksiz kopyalar oluşturmaz
+        """
         print(f"\n{'='*40}\nSAVING ARTIFACTS FOR {symbol}\n{'='*40}\n")
         artifacts_dir = f'models/artifacts/{symbol}'
         os.makedirs(artifacts_dir, exist_ok=True)
 
-        # Save model (keras native)
+        # 1. Model kaydet (keras native)
         model_path = f'{artifacts_dir}/{symbol}_model.keras'
         self.model.save(model_path)
-        print(f"Model saved: {model_path}")
+        print(f"✅ Model saved: {model_path}")
 
-        # Save scalers
+        # 2. Scalers kaydet
         with open(f'{artifacts_dir}/feature_scaler.pkl', 'wb') as f:
             pickle.dump(self.feature_scaler, f)
         with open(f'{artifacts_dir}/target_scaler.pkl', 'wb') as f:
             pickle.dump(self.target_scaler, f)
-        print("Scalers saved")
+        print("✅ Scalers saved")
 
-        # Save feature columns
+        # 3. Feature columns kaydet
         with open(f'{artifacts_dir}/feature_columns.json', 'w') as f:
             json.dump(feature_columns, f, indent=2)
-        print(f"Features saved ({len(feature_columns)})")
+        print(f"✅ Features saved ({len(feature_columns)} columns)")
 
-        # Save metadata
+        # 4. Metadata kaydet
         metadata = {
             'model_version': 'v3.0.0',
             'model_type': 'LSTM_Return_Prediction',
@@ -213,33 +217,18 @@ class StableStockPredictor:
         }
         with open(f'{artifacts_dir}/model_metadata.json', 'w') as f:
             json.dump(metadata, f, indent=2)
-        print("Metadata saved")
+        print("✅ Metadata saved")
 
-        # ---- Compatibility layer: also save alternate filenames expected by different loaders ----
-        try:
-            # alternate scaler names
-            shutil.copy2(f'{artifacts_dir}/feature_scaler.pkl', f'{artifacts_dir}/scaler_X.pkl')
-            shutil.copy2(f'{artifacts_dir}/target_scaler.pkl', f'{artifacts_dir}/scaler_y.pkl')
+        # 5. Training dataset kaydet (CSV)
+        # Bu kısmı train_single_stock metodunda zaten yapıyorsunuz, burada gerek yok
 
-            # alternate metadata/name
-            shutil.copy2(f'{artifacts_dir}/model_metadata.json', f'{artifacts_dir}/meta.json')
-
-            # alternate feature file
-            shutil.copy2(f'{artifacts_dir}/feature_columns.json', f'{artifacts_dir}/features.json')
-
-            # copy root-level artifacts for legacy loaders
-            root_dir = 'models/artifacts'
-            os.makedirs(root_dir, exist_ok=True)
-            shutil.copy2(model_path, f'{root_dir}/{symbol}_model.keras')
-            shutil.copy2(model_path, f'{root_dir}/stock_predictor_v1.keras')
-            shutil.copy2(f'{artifacts_dir}/feature_scaler.pkl', f'{root_dir}/feature_scaler.pkl')
-            shutil.copy2(f'{artifacts_dir}/target_scaler.pkl', f'{root_dir}/target_scaler.pkl')
-            shutil.copy2(f'{artifacts_dir}/feature_columns.json', f'{root_dir}/feature_columns.json')
-            shutil.copy2(f'{artifacts_dir}/model_metadata.json', f'{root_dir}/model_metadata.json')
-
-            print("Compatibility copies saved to both symbol folder and root artifacts folder")
-        except Exception as e:
-            print("Warning: failed to create compatibility copies:", e)
+        print(f"\n📦 All artifacts saved to: {artifacts_dir}/")
+        print(f"   - {symbol}_model.keras")
+        print(f"   - feature_scaler.pkl")
+        print(f"   - target_scaler.pkl")
+        print(f"   - feature_columns.json")
+        print(f"   - model_metadata.json")
+        print(f"   - {symbol}_training_set.csv")
 
     def train_single_stock(self, symbol, period="3y", epochs=100, batch_size=32):
         try:
@@ -288,31 +277,12 @@ if __name__ == "__main__":
         print(f"\n[{i}/{len(SYMBOLS)}] Training {s} ...")
         success, metrics = predictor.train_single_stock(s, period="3y", epochs=100, batch_size=32)
         results[s] = {'success': success, 'metrics': metrics}
-        if success and first_successful is None:
-            first_successful = s
-            # copy artifacts to root as in your original code
-            src_dir = f'models/artifacts/{s}'
-            dst_dir = 'models/artifacts'
-            os.makedirs(dst_dir, exist_ok=True)
-            try:
-                shutil.copy2(f'{src_dir}/{s}_model.keras', f'{dst_dir}/best_model')
-                shutil.copy2(f'{src_dir}/feature_scaler.pkl', f'{dst_dir}/feature_scaler.pkl')
-                shutil.copy2(f'{src_dir}/target_scaler.pkl', f'{dst_dir}/target_scaler.pkl')
-                shutil.copy2(f'{src_dir}/feature_columns.json', f'{dst_dir}/feature_columns.json')
-                shutil.copy2(f'{src_dir}/model_metadata.json', f'{dst_dir}/model_metadata.json')
-                performance = {
-                    'base_model': s,
-                    'trained_on': datetime.now().isoformat(),
-                    'metrics': metrics,
-                    'model_type': 'LSTM_Return_Prediction',
-                    'prediction_type': 'return'
-                }
-                with open(f'{dst_dir}/model_performance.json', 'w') as f:
-                    json.dump(performance, f, indent=2)
-                shutil.copy2(f'{src_dir}/{s}_model.keras', f'{dst_dir}/stock_predictor_v1.keras')
-                print("Root-level artifacts saved.")
-            except Exception as e:
-                print("Failed to copy root artifacts:", e)
+
+    # Training summary kaydet
+    with open('models/artifacts/training_summary.json', 'w') as f:
+        json.dump(results, f, indent=2)
+
+    print("\n✅ Training finished. Summary: models/artifacts/training_summary.json")
 
     with open('models/artifacts/training_summary.json', 'w') as f:
         json.dump(results, f, indent=2)
