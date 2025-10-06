@@ -1,57 +1,19 @@
 {
-  "model_version": "v1.0.0",
-  "trained_on": "2025-10-03T17:00:41.761822",
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-06T14:10:19.751635",
   "symbol": "WMT",
   "sequence_length": 60,
-  "feature_count": 65,
-  "use_fundamentals": true,
-  "model_format": "keras",
-  "architecture": {
-    "type": "LSTM",
-    "layers": [
-      {
-        "type": "LSTM",
-        "units": 50,
-        "return_sequences": true
-      },
-      {
-        "type": "Dropout",
-        "rate": 0.2
-      },
-      {
-        "type": "LSTM",
-        "units": 50,
-        "return_sequences": true
-      },
-      {
-        "type": "Dropout",
-        "rate": 0.2
-      },
-      {
-        "type": "LSTM",
-        "units": 50,
-        "return_sequences": false
-      },
-      {
-        "type": "Dropout",
-        "rate": 0.2
-      },
-      {
-        "type": "Dense",
-        "units": 25,
-        "activation": "relu"
-      },
-      {
-        "type": "Dense",
-        "units": 1
-      }
-    ]
-  },
+  "feature_count": 21,
   "metrics": {
-    "mse": 18.39985235608134,
-    "rmse": 4.289504908037912,
-    "mae": 3.262569999694824,
-    "r2": 0.521884327789684,
-    "mape": 3.525543146298872
-  }
+    "return_mae": 0.008892987114991565,
+    "return_rmse": 0.011957189118825937,
+    "return_r2": -0.16931473811581732,
+    "directional_accuracy_pct": 49.48453608247423,
+    "price_mae": 0.8795224336789372,
+    "price_rmse": 1.1921268206799933,
+    "price_mape_pct": 0.8929685787210598,
+    "price_r2": 0.8384672466424035
+  },
+  "prediction_type": "return"
 }

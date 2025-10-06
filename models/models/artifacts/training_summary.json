@@ -1,0 +1,132 @@
+{
+  "AAPL": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.01094359767285466,
+      "return_rmse": 0.015600151023296474,
+      "return_r2": -0.03004652816242337,
+      "directional_accuracy_pct": 45.19230769230769,
+      "price_mae": 2.373229977002948,
+      "price_rmse": 3.3716400969465083,
+      "price_mape_pct": 1.0840837822571603,
+      "price_r2": 0.9648744156477028
+    }
+  },
+  "MSFT": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.007309054749233367,
+      "return_rmse": 0.00989434207953987,
+      "return_r2": -0.08349398223586091,
+      "directional_accuracy_pct": 45.19230769230769,
+      "price_mae": 3.613095143723846,
+      "price_rmse": 4.909513952812679,
+      "price_mape_pct": 0.72667065926429,
+      "price_r2": 0.9605565128100074
+    }
+  },
+  "GOOGL": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.012948352967807398,
+      "return_rmse": 0.018839921651884296,
+      "return_r2": -0.07125349563035299,
+      "directional_accuracy_pct": 46.15384615384615,
+      "price_mae": 2.4551576796636083,
+      "price_rmse": 3.6098211947372714,
+      "price_mape_pct": 1.2819396988545246,
+      "price_r2": 0.9848523729221629
+    }
+  },
+  "AMZN": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.012488804046045795,
+      "return_rmse": 0.018264492814224667,
+      "return_r2": -0.036440880200610426,
+      "directional_accuracy_pct": 50.96153846153846,
+      "price_mae": 2.72858706418462,
+      "price_rmse": 3.970146145774271,
+      "price_mape_pct": 1.2425430735178942,
+      "price_r2": 0.8566280895247058
+    }
+  },
+  "TSLA": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.02677271811389615,
+      "return_rmse": 0.03572659320394423,
+      "return_r2": -0.1188627785011076,
+      "directional_accuracy_pct": 49.03846153846153,
+      "price_mae": 9.120888084409632,
+      "price_rmse": 12.142575131443916,
+      "price_mape_pct": 2.65411081428561,
+      "price_r2": 0.9123864930345602
+    }
+  },
+  "META": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.013140323605184358,
+      "return_rmse": 0.01952612443174017,
+      "return_r2": 0.0019522082198255575,
+      "directional_accuracy_pct": 54.807692307692314,
+      "price_mae": 9.300441997911225,
+      "price_rmse": 13.527491110887281,
+      "price_mape_pct": 1.2969707923106568,
+      "price_r2": 0.9159251891832197
+    }
+  },
+  "NVDA": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.014758976846252679,
+      "return_rmse": 0.019187783012916966,
+      "return_r2": -0.05627364293027348,
+      "directional_accuracy_pct": 50.96153846153846,
+      "price_mae": 2.332914296041473,
+      "price_rmse": 2.9938779406770535,
+      "price_mape_pct": 1.4595729352063684,
+      "price_r2": 0.9758454578314605
+    }
+  },
+  "JPM": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.008467371459636774,
+      "return_rmse": 0.010949220780611307,
+      "return_r2": -0.10225923798651171,
+      "directional_accuracy_pct": 51.92307692307693,
+      "price_mae": 2.406432420620731,
+      "price_rmse": 3.105267987458154,
+      "price_mape_pct": 0.8442080690631388,
+      "price_r2": 0.968902154063469
+    }
+  },
+  "V": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.009380705128790376,
+      "return_rmse": 0.013276289601631824,
+      "return_r2": -0.16070144463457425,
+      "directional_accuracy_pct": 55.769230769230774,
+      "price_mae": 3.29134627651405,
+      "price_rmse": 4.688159587199329,
+      "price_mape_pct": 0.946390228994772,
+      "price_r2": 0.7435514681745173
+    }
+  },
+  "WMT": {
+    "success": true,
+    "metrics": {
+      "return_mae": 0.008371337980615404,
+      "return_rmse": 0.01129559662495793,
+      "return_r2": -0.07695775035781827,
+      "directional_accuracy_pct": 49.03846153846153,
+      "price_mae": 0.8269344145770806,
+      "price_rmse": 1.124586418565557,
+      "price_mape_pct": 0.8403219851806044,
+      "price_r2": 0.8513238319716444
+    }
+  }
+}

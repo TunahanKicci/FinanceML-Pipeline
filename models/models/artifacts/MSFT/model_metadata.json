@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-06T12:04:57.921007",
+  "symbol": "MSFT",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.007309054749233367,
+    "return_rmse": 0.00989434207953987,
+    "return_r2": -0.08349398223586091,
+    "directional_accuracy_pct": 45.19230769230769,
+    "price_mae": 3.613095143723846,
+    "price_rmse": 4.909513952812679,
+    "price_mape_pct": 0.72667065926429,
+    "price_r2": 0.9605565128100074
+  },
+  "prediction_type": "return"
+}
