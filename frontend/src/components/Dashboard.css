@@ -162,6 +162,56 @@
   cursor: not-allowed;
 }
 
+/* Tab Navigation */
+.tab-navigation {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  display: flex;
+  gap: 15px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px 30px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive için tab navigation */
+@media (max-width: 768px) {
+  .tab-navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tab-button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
 /* Error Message */
 .error-message {
   margin-top: 15px;

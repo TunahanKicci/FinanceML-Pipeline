@@ -6,7 +6,7 @@ from models.forecasting_service import ForecastingService
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 import logging
 import sys
 import os
@@ -26,6 +26,7 @@ from fastapi import APIRouter
 from data.sources.sentiment_analyzer import SentimentAnalyzer
 from data.processors.risk_analyzer import RiskAnalyzer
 from api.database.simple_db import db
+from data.processors.portfolio_optimizer import PortfolioOptimizer
 
 # Logging
 logging.basicConfig(
@@ -55,6 +56,7 @@ prediction_service = None
 forecasting_service = None
 sentiment_analyzer = None
 risk_analyzer = None
+portfolio_optimizer = None
 
 # Pydantic Models
 class PredictionRequest(BaseModel):
@@ -72,6 +74,24 @@ class PredictionResponse(BaseModel):
     prediction_date: str
     confidence: str
     timestamp: str
+
+class PortfolioOptimizeRequest(BaseModel):
+    symbols: List[str]
+    period: Optional[str] = "2y"
+    constraints: Optional[dict] = None
+
+
+class EfficientFrontierRequest(BaseModel):
+    symbols: List[str]
+    period: Optional[str] = "2y"
+    num_portfolios: Optional[int] = 50
+    constraints: Optional[dict] = None
+
+
+class MonteCarloRequest(BaseModel):
+    symbols: List[str]
+    period: Optional[str] = "2y"
+    num_portfolios: Optional[int] = 10000
 
 
 # Global instances
@@ -382,7 +402,7 @@ async def get_financials(symbol: str):
 # Startup event
 @app.on_event("startup")
 async def startup_event():
-    global prediction_service, forecasting_service , sentiment_analyzer, risk_analyzer
+    global prediction_service, forecasting_service , sentiment_analyzer, risk_analyzer, portfolio_optimizer
     
     logger.info("🚀 Starting FinanceML API...")
     
@@ -391,6 +411,7 @@ async def startup_event():
         forecasting_service = ForecastingService()
         sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key="96195a56e9224ebf8d25d17d42ec3ba9")
         risk_analyzer = RiskAnalyzer()
+        portfolio_optimizer = PortfolioOptimizer(risk_free_rate=0.02)
         logger.info("✅ Services initialized")
     except Exception as e:
         logger.error(f"❌ Failed to initialize: {str(e)}")
@@ -496,6 +517,235 @@ async def root():
         "docs": "/docs",
         "health": "/health"
     }
+
+
+@app.post("/portfolio/optimize")
+async def optimize_portfolio(request: PortfolioOptimizeRequest):
+    """
+    Complete portfolio optimization using Modern Portfolio Theory
+    
+    - **symbols**: List of stock symbols (e.g., ["AAPL", "MSFT", "GOOGL"])
+    - **period**: Historical data period (default: 2y)
+    - **constraints**: Optional dict with 'min_weight' and 'max_weight'
+    
+    Returns:
+    - Maximum Sharpe ratio portfolio
+    - Minimum variance portfolio
+    - Efficient frontier
+    - Correlation matrix
+    - Individual asset statistics
+    """
+    if portfolio_optimizer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        if len(request.symbols) < 2:
+            raise HTTPException(
+                status_code=400, 
+                detail="At least 2 symbols required for portfolio optimization"
+            )
+        
+        result = portfolio_optimizer.analyze_portfolio(
+            symbols=request.symbols,
+            period=request.period,
+            constraints=request.constraints
+        )
+        
+        return result
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Portfolio optimization error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Portfolio optimization failed")
+
+
+@app.post("/portfolio/efficient-frontier")
+async def get_efficient_frontier(request: EfficientFrontierRequest):
+    """
+    Calculate efficient frontier for a set of assets
+    
+    - **symbols**: List of stock symbols
+    - **period**: Historical data period
+    - **num_portfolios**: Number of portfolios to generate (default: 50)
+    - **constraints**: Optional weight constraints
+    """
+    if portfolio_optimizer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        if len(request.symbols) < 2:
+            raise HTTPException(
+                status_code=400, 
+                detail="At least 2 symbols required"
+            )
+        
+        # Prepare data
+        portfolio_optimizer.prepare_data(request.symbols, request.period)
+        
+        # Calculate efficient frontier
+        result = portfolio_optimizer.calculate_efficient_frontier(
+            num_portfolios=request.num_portfolios,
+            constraints=request.constraints
+        )
+        
+        return {
+            'symbols': request.symbols,
+            'period': request.period,
+            'efficient_frontier': result,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Efficient frontier error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Efficient frontier calculation failed")
+
+
+@app.post("/portfolio/monte-carlo")
+async def monte_carlo_simulation(request: MonteCarloRequest):
+    """
+    Run Monte Carlo simulation for random portfolio generation
+    
+    - **symbols**: List of stock symbols
+    - **period**: Historical data period
+    - **num_portfolios**: Number of random portfolios (default: 10000)
+    """
+    if portfolio_optimizer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        if len(request.symbols) < 2:
+            raise HTTPException(
+                status_code=400, 
+                detail="At least 2 symbols required"
+            )
+        
+        # Prepare data
+        portfolio_optimizer.prepare_data(request.symbols, request.period)
+        
+        # Run Monte Carlo
+        result = portfolio_optimizer.monte_carlo_simulation(
+            num_portfolios=request.num_portfolios
+        )
+        
+        # Also get optimal portfolios for reference
+        max_sharpe = portfolio_optimizer.optimize_sharpe_ratio()
+        min_variance = portfolio_optimizer.optimize_min_variance()
+        
+        return {
+            'symbols': request.symbols,
+            'period': request.period,
+            'simulation': result,
+            'optimal_portfolios': {
+                'max_sharpe': max_sharpe,
+                'min_variance': min_variance
+            },
+            'timestamp': datetime.now().isoformat()
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Monte Carlo simulation error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Monte Carlo simulation failed")
+
+
+@app.get("/portfolio/correlation/{symbols}")
+async def get_correlation_matrix(symbols: str, period: str = "2y"):
+    """
+    Get correlation matrix for assets
+    
+    - **symbols**: Comma-separated stock symbols (e.g., "AAPL,MSFT,GOOGL")
+    - **period**: Historical data period (default: 2y)
+    """
+    if portfolio_optimizer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        symbol_list = [s.strip().upper() for s in symbols.split(',')]
+        
+        if len(symbol_list) < 2:
+            raise HTTPException(
+                status_code=400, 
+                detail="At least 2 symbols required"
+            )
+        
+        # Prepare data
+        portfolio_optimizer.prepare_data(symbol_list, period)
+        
+        # Get correlation matrix
+        result = portfolio_optimizer.get_correlation_matrix()
+        
+        return {
+            'symbols': symbol_list,
+            'period': period,
+            'correlation_matrix': result,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Correlation matrix error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Correlation matrix calculation failed")
+
+
+@app.post("/portfolio/target-return")
+async def optimize_target_return(
+    symbols: List[str],
+    target_return: float,
+    period: str = "2y",
+    constraints: Optional[dict] = None
+):
+    """
+    Find minimum variance portfolio for a target return
+    
+    - **symbols**: List of stock symbols
+    - **target_return**: Target annual return (e.g., 0.15 for 15%)
+    - **period**: Historical data period
+    - **constraints**: Optional weight constraints
+    """
+    if portfolio_optimizer is None:
+        raise HTTPException(status_code=503, detail="Service not initialized")
+    
+    try:
+        if len(symbols) < 2:
+            raise HTTPException(
+                status_code=400, 
+                detail="At least 2 symbols required"
+            )
+        
+        # Prepare data
+        portfolio_optimizer.prepare_data(symbols, period)
+        
+        # Optimize for target return
+        result = portfolio_optimizer.optimize_target_return(
+            target_return=target_return,
+            constraints=constraints
+        )
+        
+        if result is None or not result.get('success'):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not find portfolio with target return {target_return:.2%}"
+            )
+        
+        return {
+            'symbols': symbols,
+            'period': period,
+            'portfolio': result,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Target return optimization error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Optimization failed")
 
 @app.post("/forecast")
 async def forecast_multi_day(request: ForecastRequest):
