@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:25:07.248744",
+  "symbol": "JD",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.016200421583968328,
+    "return_rmse": 0.020041188177249154,
+    "return_r2": 0.008286288325911384,
+    "directional_accuracy_pct": 51.546391752577314,
+    "price_mae": 0.5307987407101036,
+    "price_rmse": 0.6561142006017033,
+    "price_mape_pct": 1.6124846906727546,
+    "price_r2": 0.7670711567589448
+  },
+  "prediction_type": "return"
+}

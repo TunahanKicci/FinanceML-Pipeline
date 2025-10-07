@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:23:45.635769",
+  "symbol": "ASML.AS",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.015789597776428452,
+    "return_rmse": 0.022290450914285408,
+    "return_r2": -0.019016708684955308,
+    "directional_accuracy_pct": 53.535353535353536,
+    "price_mae": 10.63027633351199,
+    "price_rmse": 15.297498124755627,
+    "price_mape_pct": 1.5751537577868853,
+    "price_r2": 0.9479604750192132
+  },
+  "prediction_type": "return"
+}

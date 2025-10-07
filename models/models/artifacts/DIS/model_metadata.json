@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:23:07.941353",
+  "symbol": "DIS",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.00880442754826014,
+    "return_rmse": 0.01159724171882388,
+    "return_r2": -0.18499098922324397,
+    "directional_accuracy_pct": 57.73195876288659,
+    "price_mae": 1.0246388066778866,
+    "price_rmse": 1.3486985099197686,
+    "price_mape_pct": 0.8752911390120148,
+    "price_r2": 0.8593865333881585
+  },
+  "prediction_type": "return"
+}

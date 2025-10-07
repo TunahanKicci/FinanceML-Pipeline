@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:26:29.471790",
+  "symbol": "005930.KS",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.01642224425741204,
+    "return_rmse": 0.02049697934616936,
+    "return_r2": -0.14925288745050747,
+    "directional_accuracy_pct": 43.61702127659575,
+    "price_mae": 1115.225863203793,
+    "price_rmse": 1426.857048620553,
+    "price_mape_pct": 1.623352253845634,
+    "price_r2": 0.972666433347123
+  },
+  "prediction_type": "return"
+}

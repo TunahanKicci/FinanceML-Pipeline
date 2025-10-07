@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T12:04:46.247460",
+  "trained_on": "2025-10-07T09:20:01.941479",
   "symbol": "AAPL",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.01094359767285466,
-    "return_rmse": 0.015600151023296474,
-    "return_r2": -0.03004652816242337,
-    "directional_accuracy_pct": 45.19230769230769,
-    "price_mae": 2.373229977002948,
-    "price_rmse": 3.3716400969465083,
-    "price_mape_pct": 1.0840837822571603,
-    "price_r2": 0.9648744156477028
+    "return_mae": 0.010466431493295547,
+    "return_rmse": 0.014546227265497279,
+    "return_r2": 0.002892140845792368,
+    "directional_accuracy_pct": 54.63917525773196,
+    "price_mae": 2.2866179709122996,
+    "price_rmse": 3.1858343123145985,
+    "price_mape_pct": 1.039110234769786,
+    "price_r2": 0.9704933431900276
   },
   "prediction_type": "return"
 }

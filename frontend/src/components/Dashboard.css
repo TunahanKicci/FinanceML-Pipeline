@@ -1,7 +1,7 @@
 /* src/components/Dashboard.css */
 .dashboard {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #61a9dd 10%, #2320b0 100%);
   padding: 20px;
 }
 

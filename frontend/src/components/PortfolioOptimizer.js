@@ -18,8 +18,7 @@ const PortfolioOptimizer = () => {
 
   const popularStocks = [
     'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
-    'META', 'NVDA', 'JPM', 'V', 'WMT',
-    'BRK.B', 'JNJ', 'PG', 'MA', 'DIS'
+    'META', 'NVDA', 'JPM', 'V', 'WMT'
   ];
 
   const handleAddSymbol = () => {

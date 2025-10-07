@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T12:05:37.440778",
+  "trained_on": "2025-10-07T09:20:33.221266",
   "symbol": "AMZN",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.012488804046045795,
-    "return_rmse": 0.018264492814224667,
-    "return_r2": -0.036440880200610426,
-    "directional_accuracy_pct": 50.96153846153846,
-    "price_mae": 2.72858706418462,
-    "price_rmse": 3.970146145774271,
-    "price_mape_pct": 1.2425430735178942,
-    "price_r2": 0.8566280895247058
+    "return_mae": 0.011724381678403846,
+    "return_rmse": 0.01632755751683446,
+    "return_r2": -0.004854226338039114,
+    "directional_accuracy_pct": 50.51546391752577,
+    "price_mae": 2.599848476079736,
+    "price_rmse": 3.6661831991316456,
+    "price_mape_pct": 1.1751650303717043,
+    "price_r2": 0.8382524558165669
   },
   "prediction_type": "return"
 }

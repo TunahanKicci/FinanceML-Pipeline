@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:26:50.446781",
+  "symbol": "RELIANCE.NS",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.008025442323519457,
+    "return_rmse": 0.01084180588375992,
+    "return_r2": -0.2419628157780902,
+    "directional_accuracy_pct": 54.736842105263165,
+    "price_mae": 11.43585508061058,
+    "price_rmse": 15.537432101033861,
+    "price_mape_pct": 0.8017259691835995,
+    "price_r2": 0.8877354526494635
+  },
+  "prediction_type": "return"
+}

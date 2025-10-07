@@ -1,0 +1,23 @@
+[
+  "RSI",
+  "RSI_change",
+  "MACD",
+  "MACD_Signal",
+  "MACD_diff",
+  "SMA_5",
+  "SMA_10",
+  "SMA_20",
+  "SMA_50",
+  "SMA_ratio",
+  "BB_Width",
+  "ATR",
+  "Volatility_5",
+  "Volatility_20",
+  "Volume",
+  "Volume_Ratio",
+  "Price_Position",
+  "HL_Ratio",
+  "CO_Ratio",
+  "Return_lag_1",
+  "Return_lag_2"
+]

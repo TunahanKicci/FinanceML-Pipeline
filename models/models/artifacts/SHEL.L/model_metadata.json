@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:24:30.581092",
+  "symbol": "SHEL.L",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.008994250290437161,
+    "return_rmse": 0.011498331592892345,
+    "return_r2": -0.1475167741460679,
+    "directional_accuracy_pct": 41.83673469387755,
+    "price_mae": 23.58760191381438,
+    "price_rmse": 30.11597082854233,
+    "price_mape_pct": 0.8981094184566952,
+    "price_r2": 0.8464567398948125
+  },
+  "prediction_type": "return"
+}

@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:25:44.674420",
+  "symbol": "NIO",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.03428145475311184,
+    "return_rmse": 0.0453092674190106,
+    "return_r2": -0.13794605053891384,
+    "directional_accuracy_pct": 48.45360824742268,
+    "price_mae": 0.17987998347031312,
+    "price_rmse": 0.25085790042832135,
+    "price_mape_pct": 3.3529637039365277,
+    "price_r2": 0.9676925684411095
+  },
+  "prediction_type": "return"
+}

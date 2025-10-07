@@ -1,0 +1,19 @@
+{
+  "model_version": "v3.0.0",
+  "model_type": "LSTM_Return_Prediction",
+  "trained_on": "2025-10-07T09:21:21.874445",
+  "symbol": "NFLX",
+  "sequence_length": 60,
+  "feature_count": 21,
+  "metrics": {
+    "return_mae": 0.011617939573213087,
+    "return_rmse": 0.014935150229819233,
+    "return_r2": -0.013911096597384098,
+    "directional_accuracy_pct": 50.51546391752577,
+    "price_mae": 14.259527781297345,
+    "price_rmse": 18.436077022696967,
+    "price_mape_pct": 1.164062598020282,
+    "price_r2": 0.7645346364944725
+  },
+  "prediction_type": "return"
+}
