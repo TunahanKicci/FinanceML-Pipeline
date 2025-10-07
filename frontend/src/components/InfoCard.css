@@ -1,0 +1,48 @@
+/* src/components/InfoCard.css */
+.info-card {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.info-card.expanded {
+  width: 300px;
+  height: 400px;
+  border-radius: 16px;
+}
+
+.info-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  font-size: 24px;
+}
+
+.info-card.collapsed .info-card-header {
+  font-size: 14px; /* Kapalıyken yazı boyutu küçültüldü */
+}
+
+
+.info-card.expanded .info-card-header {
+  font-size: 20px;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+.info-card-content {
+  padding: 10px;
+  font-size: 14px;
+  color: #1f2937;
+  overflow-y: auto;
+  max-height: 330px;
+}

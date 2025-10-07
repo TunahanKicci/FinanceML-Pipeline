@@ -8,10 +8,11 @@ import ForecastChart from './ForecastChart';
 import FinancialMetrics from './FinancialMetrics';
 import SentimentCard from './SentimentCard';
 import RiskAnalysis from './RiskAnalysis';
-import PortfolioOptimizer from './PortfolioOptimizer'; // YENİ
+import PortfolioOptimizer from './PortfolioOptimizer'; 
+import InfoCard from './InfoCard';
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('prediction'); // YENİ: Tab state
+  const [activeTab, setActiveTab] = useState('prediction'); 
   const [forecastData, setForecastData] = useState(null);
   const [forecastDays] = useState(14);
   const [symbol, setSymbol] = useState('AAPL');
@@ -273,6 +274,8 @@ const Dashboard = () => {
           <PortfolioOptimizer />
         </div>
       )}
+
+      <InfoCard />
 
       {/* Footer */}
       <footer className="dashboard-footer">
