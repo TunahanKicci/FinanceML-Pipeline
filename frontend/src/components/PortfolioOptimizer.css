@@ -14,6 +14,10 @@
   color: #1f2937;
 }
 
+.asset-stats-card .positive {
+  color: #eeff00;
+}
+
 .subtitle {
   margin: 0;
   font-size: 18px;
@@ -324,7 +328,7 @@
 }
 
 .return-positive {
-  color: #10b981;
+  color: #007d15;
 }
 
 .sharpe-value {
@@ -451,7 +455,7 @@
 }
 
 .good {
-  color: #10b981;
+  color: #1bb910;
   font-weight: 600;
 }
 
