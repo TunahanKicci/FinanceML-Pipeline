@@ -2,32 +2,44 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# System dependencies (SSL ve certificate paketlerini ekle)
+# System dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     curl \
-    dnsutils \
     ca-certificates \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
 
-# Copy requirements first for better caching
+# Copy requirements from root (context is now root)
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy API code
+# Install Python packages
+ENV PIP_DEFAULT_TIMEOUT=180
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY api/ ./api/
 COPY models/ ./models/
 COPY data/ ./data/
 
+# Create cache directories
+RUN mkdir -p /app/data/.stock_cache && \
+    mkdir -p /app/data/.yahoo_cache && \
+    chmod -R 777 /app/data
+
 # Set Python path
 ENV PYTHONPATH=/app
-
-# SSL doğrulamasını geçici olarak devre dışı bırak (sadece test için)
-ENV PYTHONHTTPSVERIFY=0
+ENV PYTHONUNBUFFERED=1
 
 EXPOSE 8000
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
 
 CMD ["python", "-m", "api.main"]
