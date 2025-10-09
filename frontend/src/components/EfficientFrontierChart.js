@@ -151,16 +151,9 @@ const EfficientFrontierChart = ({ data }) => {
     <div style={{ height: '500px', width: '100%' }}>
       <Scatter data={chartData} options={options} />
       
-      <div style={{ 
-        marginTop: '20px', 
-        padding: '15px', 
-        background: '#f9fafb', 
-        borderRadius: '8px',
-        fontSize: '14px',
-        color: '#6b7280'
-      }}>
+      <div className="howto-box">
         <strong>How to read this chart:</strong>
-        <ul style={{ marginTop: '10px', marginBottom: 0, paddingLeft: '20px' }}>
+        <ul className="howto-list">
           <li>The blue line shows the efficient frontier - optimal portfolios for each risk level</li>
           <li>Green star: Maximum Sharpe ratio (best risk-adjusted return)</li>
           <li>Blue triangle: Minimum variance (lowest risk)</li>

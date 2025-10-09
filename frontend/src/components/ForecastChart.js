@@ -142,19 +142,19 @@ const ForecastChart = ({ forecastData }) => {
       <Line data={data} options={options} />
       
       <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
-        <div style={{ padding: '10px', background: '#f3f4f6', borderRadius: '8px' }}>
+        <div style={{ padding: '10px', background: '#2725267d', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: '#6b7280' }}>Min Price</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold' }}>${statistics.min_price}</div>
         </div>
-        <div style={{ padding: '10px', background: '#f3f4f6', borderRadius: '8px' }}>
+        <div style={{ padding: '10px', background: '#2725267d', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: '#6b7280' }}>Max Price</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold' }}>${statistics.max_price}</div>
         </div>
-        <div style={{ padding: '10px', background: '#f3f4f6', borderRadius: '8px' }}>
+        <div style={{ padding: '10px', background: '#2725267d', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: '#6b7280' }}>Avg Price</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold' }}>${statistics.avg_price}</div>
         </div>
-        <div style={{ padding: '10px', background: '#f3f4f6', borderRadius: '8px' }}>
+        <div style={{ padding: '10px', background: '#2725267d', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: '#6b7280' }}>Volatility</div>
           <div style={{ fontSize: '18px', fontWeight: 'bold' }}>${forecastData.volatility}</div>
         </div>

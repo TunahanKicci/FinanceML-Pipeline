@@ -1,9 +1,11 @@
+@import './components-base.css';
+
 /* frontend/src/components/SentimentCard.css */
 .sentiment-card {
-  background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  color: var(--text-primary);
 }
 
 .sentiment-header {
@@ -12,13 +14,13 @@
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid rgba(255,255,255,0.04);
 }
 
 .sentiment-header h2 {
   margin: 0;
   font-size: 22px;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .news-count {
@@ -54,7 +56,7 @@
 .sentiment-circle-inner {
   width: 110px;
   height: 110px;
-  background: white;
+  background: var(--glass-bg);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -70,7 +72,7 @@
 .sentiment-score-value {
   font-size: 24px;
   font-weight: bold;
-  color: #1f2937;
+  color: rgb(30, 25, 25);
 }
 
 .sentiment-details {
@@ -102,11 +104,12 @@
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 15px;
-  background: #e5e7eb;
+  background: rgba(255,255,255,0.03);
 }
 
 .sentiment-bar-fill {
   transition: width 0.5s ease;
+  color: white;
 }
 
 .very-negative {
@@ -164,7 +167,7 @@
   gap: 15px;
   margin-bottom: 30px;
   padding: 20px;
-  background: #f9fafb;
+  background: rgba(255,255,255,0.02);
   border-radius: 8px;
 }
 
@@ -176,14 +179,14 @@
 
 .stat-label {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .stat-value {
   font-size: 20px;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .stat-value.positive {
@@ -198,7 +201,7 @@
 .recent-news h3 {
   margin-bottom: 15px;
   font-size: 18px;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .news-list {
@@ -209,7 +212,7 @@
 
 .news-item {
   padding: 15px;
-  background: #f9fafb;
+  background: rgba(255,255,255,0.02);
   border-radius: 8px;
   border-left: 4px solid;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -236,7 +239,7 @@
   flex: 1;
   font-size: 15px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   text-decoration: none;
   line-height: 1.4;
 }
@@ -251,7 +254,7 @@
   flex-wrap: wrap;
   gap: 15px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-secondary);
   padding-left: 30px;
 }
 

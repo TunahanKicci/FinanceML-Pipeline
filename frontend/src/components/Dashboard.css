@@ -1,160 +1,393 @@
-/* src/components/Dashboard.css */
+/* ============================================
+   MODERN DASHBOARD - COMPLETE THEME 2025
+   Dark Mode + Glassmorphism + Micro-interactions
+   ============================================ */
+
+/* =================== ROOT VARIABLES =================== */
+:root {
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --dark-bg: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.5);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --border-color: rgba(148, 163, 184, 0.1);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --glow-color: rgba(99, 102, 241, 0.3);
+}
+
+/* =================== DASHBOARD CONTAINER =================== */
 .dashboard {
   min-height: 100vh;
-  background: linear-gradient(135deg, #61a9dd 10%, #2320b0 100%);
+  background: var(--dark-bg);
+  position: relative;
+  overflow-x: hidden;
   padding: 20px;
 }
 
+
+
+/* Animated Mesh Gradient Background */
+.dashboard::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(217, 70, 239, 0.1) 0%, transparent 50%);
+  z-index: 0;
+  animation: meshMove 20s ease infinite;
+}
+
+@keyframes meshMove {
+  0%, 100% { 
+    background-position: 0% 50%, 100% 80%, 40% 80%;
+  }
+  50% { 
+    background-position: 100% 50%, 0% 20%, 60% 20%;
+  }
+}
+
+/* Floating Orbs */
+.dashboard::after {
+  content: '';
+  position: fixed;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+  animation: floatOrb 15s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-20%, 20%) scale(1.1); }
+}
+
+/* =================== HEADER =================== */
 .dashboard-header {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 12px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 25px 35px;
+  border-radius: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 10;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dashboard-header:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 60px var(--glow-color);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .dashboard-header h1 {
   margin: 0;
-  font-size: 28px;
-  color: #1f2937;
+  font-size: 32px;
+  font-weight: 800;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  text-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
 }
 
 .system-status {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .status-badge {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
 }
 
 .status-healthy {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.status-healthy:hover {
+  background: rgba(16, 185, 129, 0.25);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
 }
 
 .status-model {
-  background: #dbeafe;
-  color: #1e40af;
+  background: rgba(99, 102, 241, 0.15);
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
+.status-model:hover {
+  background: rgba(99, 102, 241, 0.25);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* =================== TAB NAVIGATION =================== */
+.tab-navigation {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  display: flex;
+  gap: 15px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  position: relative;
+  z-index: 10;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 16px 30px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.tab-button:hover:not(.active) {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.tab-button.active {
+  background: var(--primary-gradient);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+}
+
+.tab-button.active::before {
+  opacity: 1;
+}
+
+/* =================== CONTENT CARDS =================== */
 .dashboard-content {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  gap: 20px;
+  gap: 25px;
+  position: relative;
+  z-index: 10;
 }
 
 .card {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 35px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card Glow Effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    rgba(99, 102, 241, 0.15) 0%, 
+    transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px var(--glow-color);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 .card h2 {
   margin-top: 0;
-  margin-bottom: 20px;
-  color: #1f2937;
-  font-size: 22px;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
-/* Prediction Form */
+/* =================== FORM ELEMENTS =================== */
 .prediction-form {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #374151;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-group input {
   width: 100%;
-  padding: 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   font-size: 16px;
-  transition: border-color 0.3s;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #6366f1;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
+.form-group input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* =================== BUTTONS =================== */
 .predict-button {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  background: var(--primary-gradient);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s, opacity 0.3s;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.predict-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.predict-button:hover:not(:disabled)::before {
+  width: 300px;
+  height: 300px;
 }
 
 .predict-button:hover:not(:disabled) {
   transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
 }
 
 .predict-button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Popular Stocks */
+/* =================== STOCK CHIPS =================== */
 .popular-stocks {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .popular-stocks p {
-  margin-bottom: 10px;
-  font-weight: 500;
-  color: #6b7280;
-  font-size: 14px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stock-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .stock-chip {
-  padding: 8px 16px;
-  border: 2px solid #e5e7eb;
-  background: white;
+  padding: 10px 18px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
   cursor: pointer;
-  transition: all 0.3s;
-  font-weight: 500;
-  color: #374151;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .stock-chip:hover:not(:disabled) {
-  border-color: #667eea;
-  background: #f3f4f6;
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
 }
 
 .stock-chip.active {
-  background: #667eea;
+  background: var(--primary-gradient);
   color: white;
-  border-color: #667eea;
+  border-color: transparent;
+  box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
 }
 
 .stock-chip:disabled {
@@ -162,166 +395,143 @@
   cursor: not-allowed;
 }
 
-/* Tab Navigation */
-.tab-navigation {
-  max-width: 1200px;
-  margin: 0 auto 30px auto;
-  display: flex;
-  gap: 15px;
-  background: white;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.tab-button {
-  flex: 1;
-  padding: 15px 30px;
-  background: transparent;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #6b7280;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.tab-button:hover {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.tab-button.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-}
-
-/* Responsive için tab navigation */
-@media (max-width: 768px) {
-  .tab-navigation {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .tab-button {
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-}
-
-/* Error Message */
+/* =================== ERROR MESSAGE =================== */
 .error-message {
-  margin-top: 15px;
-  padding: 12px;
-  background: #fee2e2;
-  border-left: 4px solid #ef4444;
-  border-radius: 8px;
-  color: #991b1b;
-}
-
-/* Results Grid */
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.result-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.result-label {
-  font-size: 14px;
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.result-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.symbol-value {
-  color: #667eea;
-}
-
-.predicted-price {
-  color: #10b981;
-}
-
-.full-width {
-  grid-column: 1 / -1;
-}
-
-/* Disclaimer */
-.prediction-disclaimer {
   margin-top: 20px;
-  padding: 15px;
-  background: #fef3c7;
-  border-left: 4px solid #f59e0b;
-  border-radius: 8px;
-  color: #92400e;
-  font-size: 14px;
+  padding: 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  color: #fca5a5;
+  backdrop-filter: blur(10px);
 }
 
-/* Model Info */
+/* =================== MODEL INFO =================== */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  gap: 20px;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.info-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
 }
 
 .info-label {
-  font-size: 13px;
-  color: #6b7280;
-  font-weight: 500;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .info-value {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
+/* =================== FORECAST CARD =================== */
 .forecast-card {
-  margin-top: 20px; /* Forecast kart ile üstteki içerik arası */
+  margin-top: 25px;
 }
 
 .financial-card {
-  margin-top: 70px; /* Forecast grafiği ile FinancialMetrics tablosu arası */
-}
-
-/* Footer */
-.dashboard-footer {
   margin-top: 30px;
-  text-align: center;
-  color: white;
-  font-size: 14px;
 }
 
-/* Responsive */
+/* =================== FOOTER =================== */
+.dashboard-footer {
+  margin-top: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  position: relative;
+  z-index: 10;
+}
+
+/* =================== RESPONSIVE =================== */
 @media (max-width: 768px) {
+  .dashboard {
+    padding: 15px;
+  }
+
   .dashboard-header {
     flex-direction: column;
     gap: 15px;
+    padding: 20px;
   }
 
-  .results-grid,
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .tab-navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tab-button {
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  .card {
+    padding: 25px;
+  }
+
   .info-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* =================== ANIMATIONS =================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+/* =================== SCROLLBAR =================== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.7);
 }

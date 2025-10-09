@@ -1,3 +1,5 @@
+@import './components-base.css';
+
 /* src/components/InfoCard.css */
 .info-card {
   position: fixed;
@@ -12,6 +14,8 @@
   overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 9999; /* Bunu ekle */
+
 }
 
 .info-card.expanded {
@@ -42,7 +46,7 @@
 .info-card-content {
   padding: 10px;
   font-size: 14px;
-  color: #1f2937;
+  color: var(--text-primary);
   overflow-y: auto;
   max-height: 330px;
 }

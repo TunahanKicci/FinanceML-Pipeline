@@ -1,21 +1,21 @@
+@import './components-base.css';
+
 /* frontend/src/components/FinancialMetrics.css */
 .financial-metrics {
-  background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .company-header {
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid rgba(255,255,255,0.04);
 }
 
 .company-header h2 {
   margin: 0 0 10px 0;
   font-size: 24px;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .company-info {
@@ -25,17 +25,17 @@
 
 .badge {
   padding: 4px 12px;
-  background: #e5e7eb;
+  background: rgba(255,255,255,0.03);
   border-radius: 12px;
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Financial Score */
 .financial-score-card {
   margin-bottom: 30px;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #442a5e 100%);
   border-radius: 12px;
   color: white;
 }
@@ -64,7 +64,7 @@
 .score-inner {
   width: 90px;
   height: 90px;
-  background: white;
+  background: var(--glass-bg);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -75,7 +75,7 @@
 .score-value {
   font-size: 32px;
   font-weight: bold;
-  color: #1f2937;
+  color: rgb(51, 45, 45);
 }
 
 .score-max {
@@ -108,7 +108,8 @@
   padding: 4px 10px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 16px; /* Eskiden 12px idi */
+  font-weight: 500;
 }
 
 /* Metrics Grid */
@@ -121,7 +122,7 @@
 
 .metric-section {
   padding: 20px;
-  background: #f9fafb;
+  background: rgba(255,255,255,0.03);
   border-radius: 8px;
 }
 
@@ -129,7 +130,7 @@
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 16px;
-  color: #374151;
+  color: var(--text-secondary);
 }
 
 .metric-items {
@@ -152,7 +153,7 @@
 .metric-value {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 /* Quarterly Table */
@@ -183,13 +184,13 @@
 }
 
 .quarterly-table th {
-  background: #f3f4f6;
+  background: rgba(255,255,255,0.03);
   font-weight: 600;
-  color: #374151;
+  color: var(--text-secondary);
 }
 
 .quarterly-table td {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {
