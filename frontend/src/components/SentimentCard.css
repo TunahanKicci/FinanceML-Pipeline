@@ -112,25 +112,11 @@
   color: white;
 }
 
-.very-negative {
-  background: #991b1b;
-}
-
-.negative {
-  background: #ef4444;
-}
-
-.neutral {
-  background: #6b7280;
-}
-
-.positive {
-  background: #3b82f6;
-}
-
-.very-positive {
-  background: #10b981;
-}
+.sentiment-bar .very-negative { background: #991b1b; }
+.sentiment-bar .negative { background: #ef4444; }
+.sentiment-bar .neutral { background: #6b7280; }
+.sentiment-bar .positive { background: #3b82f6; }
+.sentiment-bar .very-positive { background: #10b981; }
 
 /* Distribution Legend */
 .distribution-legend {
