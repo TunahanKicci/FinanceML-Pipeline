@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-11T11:40:02.551539",
+  "fundamentals": {
+    "PE_Ratio": 52.034092,
+    "Forward_PE": 44.456314,
+    "PEG_Ratio": null,
+    "Price_to_Book": 44.531975,
+    "Price_to_Sales": 26.990986,
+    "EV_to_Revenue": 26.659,
+    "EV_to_EBITDA": 44.816,
+    "Profit_Margin": 0.52414,
+    "Operating_Margin": 0.60842997,
+    "Gross_Margin": 0.69847,
+    "ROE": 1.09417,
+    "ROA": 0.53094,
+    "Current_Ratio": 4.214,
+    "Quick_Ratio": 3.488,
+    "Debt_to_Equity": 10.584,
+    "Revenue_Growth": 0.556,
+    "Earnings_Growth": 0.612,
+    "EPS": 3.52,
+    "Book_Value_Per_Share": 4.113,
+    "Dividend_Yield": 0.02,
+    "Payout_Ratio": 0.0114,
+    "Market_Cap": 4459396595712,
+    "Enterprise_Value": 4404594868224,
+    "Total_Debt": 10597999616,
+    "Free_Cashflow": 52436750336,
+    "Sector": "Technology",
+    "Industry": "Semiconductors",
+    "Company_Name": "NVIDIA Corporation"
+  }
+}

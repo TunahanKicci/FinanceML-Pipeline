@@ -7,7 +7,7 @@ from scipy.optimize import minimize
 from typing import Dict, List, Tuple, Optional
 import logging
 from datetime import datetime, timedelta
-import yfinance as yf
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -15,12 +15,14 @@ logger = logging.getLogger(__name__)
 class PortfolioOptimizer:
     """Markowitz Modern Portfolio Theory implementation"""
     
-    def __init__(self, risk_free_rate: float = 0.02):
+    def __init__(self, risk_free_rate: float = 0.02, cache_dir: Optional[str] = None):
         """
         Args:
             risk_free_rate: Annual risk-free rate (default: 2%)
+            cache_dir: Directory to load cached CSV files from
         """
         self.risk_free_rate = risk_free_rate
+        self.cache_dir = Path(cache_dir) if cache_dir else None
         self.returns_data = None
         self.mean_returns = None
         self.cov_matrix = None
@@ -28,40 +30,53 @@ class PortfolioOptimizer:
     
     def fetch_data(self, symbols: List[str], period: str = "2y") -> pd.DataFrame:
         """
-        Fetch historical price data for multiple stocks
+        Load historical price data from cache for multiple stocks
         
         Args:
             symbols: List of stock symbols
-            period: Historical period (1y, 2y, 5y, max)
+            period: Historical period (ignored, using cached 2y data)
         
         Returns:
-            DataFrame with adjusted close prices
+            DataFrame with close prices
         """
         try:
-            logger.info(f"Fetching data for {len(symbols)} symbols: {symbols}")
+            logger.info(f"Loading cached data for {len(symbols)} symbols: {symbols}")
             
-            data = yf.download(symbols, period=period, progress=False)
+            if not self.cache_dir:
+                raise ValueError("cache_dir not configured")
             
-            if 'Adj Close' in data.columns:
-                prices = data['Adj Close']
-            else:
-                prices = data['Close']
+            all_prices = {}
             
-            # Handle single symbol case
-            if len(symbols) == 1:
-                prices = pd.DataFrame(prices, columns=symbols)
+            for symbol in symbols:
+                cache_file = self.cache_dir / f"{symbol}_2y_1d.csv"
+                
+                if not cache_file.exists():
+                    logger.warning(f"Cache file not found for {symbol}: {cache_file}")
+                    continue
+                
+                df = pd.read_csv(cache_file, parse_dates=['Date'], index_col='Date')
+                
+                if 'Close' not in df.columns:
+                    logger.warning(f"Close column not found in {cache_file}")
+                    continue
+                
+                all_prices[symbol] = df['Close']
             
-            # Drop NaN values
+            if not all_prices:
+                raise ValueError("No valid price data found in cache")
+            
+            # Combine all prices into a single DataFrame
+            prices = pd.DataFrame(all_prices)
             prices = prices.dropna()
             
             if prices.empty:
-                raise ValueError("No valid price data found")
+                raise ValueError("No valid price data after removing NaN values")
             
-            logger.info(f"Fetched {len(prices)} days of data")
+            logger.info(f"Loaded {len(prices)} days of cached data for {len(all_prices)} symbols")
             return prices
             
         except Exception as e:
-            logger.error(f"Error fetching data: {e}")
+            logger.error(f"Error loading cached data: {e}")
             raise
     
     def calculate_returns(self, prices: pd.DataFrame) -> pd.DataFrame:
@@ -133,6 +148,9 @@ class PortfolioOptimizer:
             init_weights = np.array([1/n_assets] * n_assets)
             
             # Constraints
+            if constraints is None:
+                constraints = {}
+            
             bounds = tuple(
                 (constraints.get('min_weight', 0.0), constraints.get('max_weight', 1.0))
                 for _ in range(n_assets)
@@ -186,6 +204,9 @@ class PortfolioOptimizer:
             n_assets = len(self.symbols)
             init_weights = np.array([1/n_assets] * n_assets)
             
+            if constraints is None:
+                constraints = {}
+            
             bounds = tuple(
                 (constraints.get('min_weight', 0.0), constraints.get('max_weight', 1.0))
                 for _ in range(n_assets)
@@ -238,6 +259,9 @@ class PortfolioOptimizer:
         try:
             n_assets = len(self.symbols)
             init_weights = np.array([1/n_assets] * n_assets)
+            
+            if constraints is None:
+                constraints = {}
             
             bounds = tuple(
                 (constraints.get('min_weight', 0.0), constraints.get('max_weight', 1.0))

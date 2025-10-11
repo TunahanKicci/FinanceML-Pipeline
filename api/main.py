@@ -13,6 +13,7 @@ import os
 from fastapi.responses import JSONResponse
 import yfinance as yf
 import math
+import numpy as np
 
 # Path setup
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -27,6 +28,7 @@ from data.sources.sentiment_analyzer import SentimentAnalyzer
 from data.processors.risk_analyzer import RiskAnalyzer
 from api.database.simple_db import db
 from data.processors.portfolio_optimizer import PortfolioOptimizer
+from datetime import datetime
 
 # Logging
 logging.basicConfig(
@@ -106,14 +108,26 @@ def safe_get(df, col):
     return None
 
 def safe_float(val):
-    """Convert float/int to JSON-safe value (None if NaN or inf)"""
+    """Convert any numeric type to JSON-safe value (None if NaN/inf), including numpy types"""
     if val is None:
         return None
+    
+    # Handle string values (don't process them as numbers)
+    if isinstance(val, str):
+        return val
+    
+    # Handle numpy types
+    if isinstance(val, (np.generic, np.int64, np.float64, np.float32, np.int32)):
+        val = val.item()
+    
+    # Handle Python numeric types
     if isinstance(val, (float, int)):
-        if math.isnan(val) or math.isinf(val):
+        if isinstance(val, float) and (math.isnan(val) or math.isinf(val)):
             return None
         return float(val)
+    
     return val
+
 
 def calculate_financial_score(metrics: dict) -> dict:
     """
@@ -348,49 +362,57 @@ def calculate_financial_score(metrics: dict) -> dict:
 @app.get("/financials/{symbol}")
 async def get_financials(symbol: str):
     """
-    Return real financial data using yfinance
+    Return financial data from cache (JSON files)
     """
     try:
-        # 1. Fiyat verisini al (son 1 yıl)
-        ticker = yf.Ticker(symbol)
-        price_df = ticker.history(period="1y")
-        if price_df.empty:
-            return JSONResponse(content={"error": "Price data not found"}, status_code=404)
-
-        # 2. Temel verileri merge et
-        df_with_fundamentals = fundamental_processor.fetch_and_merge_fundamentals(symbol, price_df)
-
-        # 3. Frontend’in beklediği JSON yapısına dönüştür
-        metrics = {
-            "company_name": ticker.info.get("shortName", symbol.upper()),
-            "pe_ratio": safe_float(df_with_fundamentals.get("PE_Ratio").iloc[-1] if "PE_Ratio" in df_with_fundamentals else None),
-            "forward_pe": safe_float(df_with_fundamentals.get("Forward_PE").iloc[-1] if "Forward_PE" in df_with_fundamentals else None),
-            "peg_ratio": safe_float(df_with_fundamentals.get("PEG_Ratio").iloc[-1] if "PEG_Ratio" in df_with_fundamentals else None),
-            "price_to_book": safe_float(df_with_fundamentals.get("Price_to_Book").iloc[-1] if "Price_to_Book" in df_with_fundamentals else None),
-            "price_to_sales": safe_float(df_with_fundamentals.get("Price_to_Sales").iloc[-1] if "Price_to_Sales" in df_with_fundamentals else None),
-            "profit_margin": safe_float(df_with_fundamentals.get("Profit_Margin").iloc[-1] if "Profit_Margin" in df_with_fundamentals else None),
-            "operating_margin": safe_float(df_with_fundamentals.get("Operating_Margin").iloc[-1] if "Operating_Margin" in df_with_fundamentals else None),
-            "gross_margin": safe_float(df_with_fundamentals.get("Gross_Margin").iloc[-1] if "Gross_Margin" in df_with_fundamentals else None),
-            "roe": safe_float(df_with_fundamentals.get("ROE").iloc[-1] if "ROE" in df_with_fundamentals else None),
-            "roa": safe_float(df_with_fundamentals.get("ROA").iloc[-1] if "ROA" in df_with_fundamentals else None),
-            "current_ratio": safe_float(df_with_fundamentals.get("Current_Ratio").iloc[-1] if "Current_Ratio" in df_with_fundamentals else None),
-            "quick_ratio": safe_float(df_with_fundamentals.get("Quick_Ratio").iloc[-1] if "Quick_Ratio" in df_with_fundamentals else None),
-            "debt_to_equity": safe_float(df_with_fundamentals.get("Debt_to_Equity").iloc[-1] if "Debt_to_Equity" in df_with_fundamentals else None),
-            "total_debt": safe_float(df_with_fundamentals.get("Total_Debt").iloc[-1] if "Total_Debt" in df_with_fundamentals else None),
-            "free_cashflow": safe_float(df_with_fundamentals.get("Free_Cashflow").iloc[-1] if "Free_Cashflow" in df_with_fundamentals else None),
-            "revenue_growth": safe_float(df_with_fundamentals.get("Revenue_Growth").iloc[-1] if "Revenue_Growth" in df_with_fundamentals else None),
-            "earnings_growth": safe_float(df_with_fundamentals.get("Earnings_Growth").iloc[-1] if "Earnings_Growth" in df_with_fundamentals else None),
-            "eps_trailing": safe_float(df_with_fundamentals.get("EPS").iloc[-1] if "EPS" in df_with_fundamentals else None),
-            "market_cap": safe_float(ticker.info.get("marketCap")),
-            "quarterly_income": [],  # opsiyonel: quarterly_financials eklenebilir
-            "sector": ticker.info.get("sector", ""),
-            "industry": ticker.info.get("industry", "")
+        import json
+        import os
+        
+        # Cache dosyasının yolunu belirle
+        cache_file = f"/app/data/cache/fundamentals/{symbol.upper()}_fundamentals.json"
+        
+        # Dosya var mı kontrol et
+        if not os.path.exists(cache_file):
+            return JSONResponse(content={"error": f"No cached data found for {symbol.upper()}"}, status_code=404)
+        
+        # JSON dosyasını oku
+        with open(cache_file, 'r') as f:
+            cached_data = json.load(f)
+        
+        # fundamentals objesini al
+        metrics = cached_data.get("fundamentals", {})
+        
+        # Frontend için düzenleme (key isimleri küçük harfe çevir)
+        frontend_metrics = {
+            "company_name": metrics.get("Company_Name", symbol.upper()),
+            "pe_ratio": safe_float(metrics.get("PE_Ratio")),
+            "forward_pe": safe_float(metrics.get("Forward_PE")),
+            "peg_ratio": safe_float(metrics.get("PEG_Ratio")),
+            "price_to_book": safe_float(metrics.get("Price_to_Book")),
+            "price_to_sales": safe_float(metrics.get("Price_to_Sales")),
+            "profit_margin": safe_float(metrics.get("Profit_Margin")),
+            "operating_margin": safe_float(metrics.get("Operating_Margin")),
+            "gross_margin": safe_float(metrics.get("Gross_Margin")),
+            "roe": safe_float(metrics.get("ROE")),
+            "roa": safe_float(metrics.get("ROA")),
+            "current_ratio": safe_float(metrics.get("Current_Ratio")),
+            "quick_ratio": safe_float(metrics.get("Quick_Ratio")),
+            "debt_to_equity": safe_float(metrics.get("Debt_to_Equity")),
+            "total_debt": safe_float(metrics.get("Total_Debt")),
+            "free_cashflow": safe_float(metrics.get("Free_Cashflow")),
+            "revenue_growth": safe_float(metrics.get("Revenue_Growth")),
+            "earnings_growth": safe_float(metrics.get("Earnings_Growth")),
+            "eps_trailing": safe_float(metrics.get("EPS")),
+            "market_cap": safe_float(metrics.get("Market_Cap")),
+            "quarterly_income": [],
+            "sector": metrics.get("Sector", "Technology"),
+            "industry": metrics.get("Industry", "Software")
         }
+        
+        # Financial score hesapla
+        financial_score = calculate_financial_score(frontend_metrics)
 
-        # Mock financial score (opsiyonel: gerçek algoritma ile hesaplanabilir)
-        financial_score = calculate_financial_score(metrics)
-
-        return JSONResponse(content={"metrics": metrics, "financial_score": financial_score})
+        return JSONResponse(content={"metrics": frontend_metrics, "financial_score": financial_score})
 
     except Exception as e:
         logger.error(f"Error fetching financials for {symbol}: {e}")
@@ -408,10 +430,10 @@ async def startup_event():
     
     try:
         prediction_service = PredictionService()
-        forecasting_service = ForecastingService()
+        forecasting_service = ForecastingService(cache_dir="/app/data/cache")
         sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key="96195a56e9224ebf8d25d17d42ec3ba9")
-        risk_analyzer = RiskAnalyzer()
-        portfolio_optimizer = PortfolioOptimizer(risk_free_rate=0.02)
+        risk_analyzer = RiskAnalyzer(cache_dir="/app/data/cache")
+        portfolio_optimizer = PortfolioOptimizer(risk_free_rate=0.02, cache_dir="/app/data/cache")
         logger.info("✅ Services initialized")
     except Exception as e:
         logger.error(f"❌ Failed to initialize: {str(e)}")

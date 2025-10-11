@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-11T11:40:18.630414",
+  "fundamentals": {
+    "PE_Ratio": 33.55957,
+    "Forward_PE": 27.14455,
+    "PEG_Ratio": null,
+    "Price_to_Book": 17.548384,
+    "Price_to_Sales": 17.149736,
+    "EV_to_Revenue": 17.2,
+    "EV_to_EBITDA": 24.561,
+    "Profit_Margin": 0.52158,
+    "Operating_Margin": 0.66772,
+    "Gross_Margin": 0.97780997,
+    "ROE": 0.51755,
+    "ROA": 0.17049,
+    "Current_Ratio": 1.115,
+    "Quick_Ratio": 0.781,
+    "Debt_to_Equity": 65.017,
+    "Revenue_Growth": 0.143,
+    "Earnings_Growth": 0.121,
+    "EPS": 10.24,
+    "Book_Value_Per_Share": 19.583,
+    "Dividend_Yield": 0.69,
+    "Payout_Ratio": 0.2236,
+    "Market_Cap": 667004698624,
+    "Enterprise_Value": 668966846464,
+    "Total_Debt": 25137999872,
+    "Free_Cashflow": 18054000640,
+    "Sector": "Financial Services",
+    "Industry": "Credit Services",
+    "Company_Name": "Visa Inc."
+  }
+}

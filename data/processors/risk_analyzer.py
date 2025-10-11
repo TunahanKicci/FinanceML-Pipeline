@@ -1,11 +1,11 @@
 # data/processors/risk_analyzer.py
 """
-Risk and Volatility Analysis
+Risk and Volatility Analysis (Cache-based version)
 """
 import numpy as np
 import pandas as pd
 from scipy import stats
-import yfinance as yf
+import os
 from datetime import datetime, timedelta
 import logging
 
@@ -13,14 +13,35 @@ logger = logging.getLogger(__name__)
 
 
 class RiskAnalyzer:
-    """Calculate risk metrics for stocks"""
+    """Calculate risk metrics for stocks using cached data"""
     
-    def __init__(self):
-        pass
+    def __init__(self, cache_dir: str = "/app/data/cache"):
+        self.cache_dir = cache_dir
+    
+    def load_price_data(self, symbol: str) -> pd.DataFrame:
+        """Load price data from CSV cache"""
+        try:
+            cache_file = os.path.join(self.cache_dir, f"{symbol}_2y_1d.csv")
+            
+            if not os.path.exists(cache_file):
+                logger.error(f"Cache file not found: {cache_file}")
+                return None
+            
+            df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
+            
+            if df.empty:
+                logger.error(f"Empty data for {symbol}")
+                return None
+            
+            return df
+            
+        except Exception as e:
+            logger.error(f"Error loading price data for {symbol}: {e}")
+            return None
     
     def calculate_beta(self, stock_symbol: str, market_symbol: str = "^GSPC", period: str = "1y") -> float:
         """
-        Calculate Beta coefficient (stock vs market correlation)
+        Calculate Beta coefficient (stock vs market correlation) using cached data
         
         Beta > 1: More volatile than market
         Beta = 1: Moves with market
@@ -28,15 +49,26 @@ class RiskAnalyzer:
         Beta < 0: Inverse correlation
         """
         try:
-            # Fetch stock and market data
-            stock = yf.Ticker(stock_symbol)
-            market = yf.Ticker(market_symbol)
+            # Load stock and market data from cache
+            stock_hist = self.load_price_data(stock_symbol)
+            market_hist = self.load_price_data(market_symbol)
             
-            stock_hist = stock.history(period=period)
-            market_hist = market.history(period=period)
+            if stock_hist is None or market_hist is None:
+                return None
             
             if stock_hist.empty or market_hist.empty:
                 return None
+            
+            # Limit to period (approximate)
+            if period == "1y":
+                days = 252
+            elif period == "2y":
+                days = 504
+            else:
+                days = 252
+            
+            stock_hist = stock_hist.tail(days)
+            market_hist = market_hist.tail(days)
             
             # Calculate returns
             stock_returns = stock_hist['Close'].pct_change().dropna()
@@ -65,7 +97,7 @@ class RiskAnalyzer:
     
     def calculate_volatility(self, symbol: str, period: str = "1y", window: int = 30) -> dict:
         """
-        Calculate volatility metrics
+        Calculate volatility metrics using cached data
         
         Returns:
             - Annual volatility (standard deviation of returns)
@@ -73,11 +105,16 @@ class RiskAnalyzer:
             - Historical volatility
         """
         try:
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period=period)
+            hist = self.load_price_data(symbol)
             
-            if hist.empty:
+            if hist is None or hist.empty:
                 return None
+            
+            # Limit to period
+            if period == "1y":
+                hist = hist.tail(252)
+            elif period == "2y":
+                hist = hist.tail(504)
             
             # Daily returns
             returns = hist['Close'].pct_change().dropna()
@@ -118,7 +155,7 @@ class RiskAnalyzer:
         period: str = "1y"
     ) -> dict:
         """
-        Calculate Value at Risk (VaR)
+        Calculate Value at Risk (VaR) using cached data
         
         VaR: Maximum expected loss over a time period at a given confidence level
         
@@ -132,11 +169,16 @@ class RiskAnalyzer:
             - CVaR (Conditional VaR / Expected Shortfall)
         """
         try:
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period=period)
+            hist = self.load_price_data(symbol)
             
-            if hist.empty:
+            if hist is None or hist.empty:
                 return None
+            
+            # Limit to period
+            if period == "1y":
+                hist = hist.tail(252)
+            elif period == "2y":
+                hist = hist.tail(504)
             
             # Get current price and calculate returns
             current_price = float(hist['Close'].iloc[-1])
@@ -181,18 +223,23 @@ class RiskAnalyzer:
     
     def calculate_sharpe_ratio(self, symbol: str, period: str = "1y", risk_free_rate: float = 0.02) -> float:
         """
-        Calculate Sharpe Ratio (risk-adjusted return)
+        Calculate Sharpe Ratio (risk-adjusted return) using cached data
         
         Sharpe > 1: Good
         Sharpe > 2: Very good
         Sharpe > 3: Excellent
         """
         try:
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period=period)
+            hist = self.load_price_data(symbol)
             
-            if hist.empty:
+            if hist is None or hist.empty:
                 return None
+            
+            # Limit to period
+            if period == "1y":
+                hist = hist.tail(252)
+            elif period == "2y":
+                hist = hist.tail(504)
             
             returns = hist['Close'].pct_change().dropna()
             
@@ -213,14 +260,19 @@ class RiskAnalyzer:
     
     def calculate_max_drawdown(self, symbol: str, period: str = "1y") -> dict:
         """
-        Calculate Maximum Drawdown (largest peak-to-trough decline)
+        Calculate Maximum Drawdown (largest peak-to-trough decline) using cached data
         """
         try:
-            ticker = yf.Ticker(symbol)
-            hist = ticker.history(period=period)
+            hist = self.load_price_data(symbol)
             
-            if hist.empty:
+            if hist is None or hist.empty:
                 return None
+            
+            # Limit to period
+            if period == "1y":
+                hist = hist.tail(252)
+            elif period == "2y":
+                hist = hist.tail(504)
             
             prices = hist['Close']
             

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-10-11T11:40:09.465244",
+  "fundamentals": {
+    "PE_Ratio": 15.430257,
+    "Forward_PE": 17.974314,
+    "PEG_Ratio": null,
+    "Price_to_Book": 2.4560044,
+    "Price_to_Sales": 5.052724,
+    "EV_to_Revenue": 2.903,
+    "EV_to_EBITDA": null,
+    "Profit_Margin": 0.34524,
+    "Operating_Margin": 0.43749002,
+    "Gross_Margin": 0.0,
+    "ROE": 0.16211,
+    "ROA": 0.012999999,
+    "Current_Ratio": null,
+    "Quick_Ratio": null,
+    "Debt_to_Equity": null,
+    "Revenue_Growth": -0.106,
+    "Earnings_Growth": -0.144,
+    "EPS": 19.5,
+    "Book_Value_Per_Share": 122.512,
+    "Dividend_Yield": 1.99,
+    "Payout_Ratio": 0.2718,
+    "Market_Cap": 827373453312,
+    "Enterprise_Value": 475370422272,
+    "Total_Debt": 1165543997440,
+    "Free_Cashflow": null,
+    "Sector": "Financial Services",
+    "Industry": "Banks - Diversified",
+    "Company_Name": "JP Morgan Chase & Co."
+  }
+}

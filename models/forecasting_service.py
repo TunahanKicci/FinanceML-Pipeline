@@ -1,6 +1,6 @@
 # models/forecasting_service.py
 """
-Multi-day stock price forecasting service - FIXED VERSION
+Multi-day stock price forecasting service - Cache-based version
 """
 import sys
 import os
@@ -15,11 +15,39 @@ import json
 import pickle
 from tensorflow import keras
 
-from data.sources.yahoo_finance import YahooFinanceClient
 from data.feature_engineering import FeatureEngineer
 from data.processors.fundamental_processor import FundamentalProcessor
 
 logger = logging.getLogger(__name__)
+
+
+class CachedDataClient:
+    """Simple client to load cached price data"""
+    
+    def __init__(self, cache_dir: str = "/app/data/cache"):
+        self.cache_dir = cache_dir
+    
+    def fetch_stock_data(self, symbol: str, period: str = "2y") -> pd.DataFrame:
+        """Load stock data from CSV cache"""
+        try:
+            cache_file = os.path.join(self.cache_dir, f"{symbol}_2y_1d.csv")
+            
+            if not os.path.exists(cache_file):
+                logger.error(f"Cache file not found: {cache_file}")
+                raise ValueError(f"No cached data found for {symbol}")
+            
+            df = pd.read_csv(cache_file, index_col=0, parse_dates=True)
+            
+            if df.empty:
+                logger.error(f"Empty data for {symbol}")
+                raise ValueError(f"No data found for {symbol}")
+            
+            logger.info(f"✅ Loaded {len(df)} records from cache for {symbol}")
+            return df
+            
+        except Exception as e:
+            logger.error(f"Error loading cached data for {symbol}: {e}")
+            raise ValueError(f"No data found for {symbol}")
 
 
 class StockModelLoader:
@@ -64,10 +92,10 @@ class StockModelLoader:
 
 
 class ForecastingService:
-    """Multi-day stock price forecasting - FIXED VERSION"""
+    """Multi-day stock price forecasting - Cache-based version"""
     
-    def __init__(self):
-        self.data_client = YahooFinanceClient()
+    def __init__(self, cache_dir: str = "/app/data/cache"):
+        self.data_client = CachedDataClient(cache_dir=cache_dir)
         self.feature_engineer = FeatureEngineer()
         self.fundamental_processor = FundamentalProcessor()
         self.loaded_models = {}
