@@ -1,0 +1,44 @@
+services:
+  # Backend API Service
+  - type: web
+    name: financeml-api
+    env: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    plan: free
+    region: frankfurt  # veya oregon, singapore
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: LOG_LEVEL
+        value: INFO
+      - key: PORT
+        value: 8000
+    # Auto-deploy on push
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: web
+    name: financeml-frontend
+    env: static
+    buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
+    staticPublishPath: ./frontend/build
+    plan: free
+    region: frankfurt
+    branch: main
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://financeml-api.onrender.com
+    autoDeploy: true
+
+  # Note: Render free tier limitations
+  # - Services spin down after 15 minutes of inactivity
+  # - 750 hours/month free (shared across all services)
+  # - No persistent disk (use external storage if needed)
+  # - Database free tier available separately

@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 import yfinance as yf
 import math
 import numpy as np
+import time
 
 # Path setup
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -30,6 +31,21 @@ from api.database.simple_db import db
 from data.processors.portfolio_optimizer import PortfolioOptimizer
 from datetime import datetime
 
+# Import Prometheus metrics
+try:
+    from monitoring.prometheus_metrics import (
+        REQUEST_COUNT,
+        REQUEST_LATENCY,
+        PREDICTION_COUNT,
+        CACHE_HITS,
+        CACHE_MISSES,
+        update_system_metrics
+    )
+    METRICS_ENABLED = True
+except ImportError:
+    METRICS_ENABLED = False
+    print("Warning: Prometheus metrics not available")
+
 # Logging
 logging.basicConfig(
     level=logging.INFO,
@@ -44,14 +60,61 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS
+# CORS - Allow frontend domains
+# Note: Update with your actual production domain
+allowed_origins = [
+    "http://localhost:3000",  # Local development
+    "http://localhost:3001",  # Alternative local port
+    "https://*.onrender.com",  # Render deployments
+    # Add your custom domain here:
+    # "https://yourdomain.me",
+    # "https://www.yourdomain.me",
+]
+
+# In development, allow all origins
+if os.getenv("ENVIRONMENT") == "development":
+    allowed_origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Production'da kısıtla
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Metrics middleware
+@app.middleware("http")
+async def metrics_middleware(request, call_next):
+    """Collect metrics for each request"""
+    start_time = time.time()
+    
+    # Process request
+    response = await call_next(request)
+    
+    # Record metrics
+    if METRICS_ENABLED:
+        duration = time.time() - start_time
+        REQUEST_COUNT.labels(
+            method=request.method,
+            endpoint=request.url.path,
+            status=response.status_code
+        ).inc()
+        REQUEST_LATENCY.labels(
+            method=request.method,
+            endpoint=request.url.path
+        ).observe(duration)
+        
+        # Update system metrics periodically (every 10 requests)
+        if REQUEST_COUNT._metrics:
+            try:
+                update_system_metrics()
+            except:
+                pass
+    
+    return response
+
 
 # Global service instance
 prediction_service = None
@@ -489,6 +552,17 @@ async def health_check():
         "service": "FinanceML API",
         "version": "1.0.0"
     }
+
+
+@app.get("/metrics")
+async def metrics():
+    """Prometheus metrics endpoint"""
+    try:
+        from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+        from fastapi import Response
+        return Response(content=generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    except ImportError:
+        return {"error": "prometheus_client not installed"}
 
 
 @app.get("/model/status")
