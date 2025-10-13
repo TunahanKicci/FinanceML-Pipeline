@@ -64,7 +64,7 @@ const Dashboard = () => {
     >
       {/* Header */}
       <header className="dashboard-header">
-        <h1>FinanceML Dashboard</h1>
+        <h1>Hisse Senedi Analiz Platformu</h1>
         <div className="system-status">
           {systemHealth && <span className="status-badge status-healthy">System: {systemHealth.status}</span>}
           {modelStatus && <span className="status-badge status-model">Model: {modelStatus.version}</span>}
@@ -191,7 +191,12 @@ const Dashboard = () => {
 
       {/* Footer */}
       <footer className="dashboard-footer">
-        <p>FinanceML Pipeline - AI-Powered Stock Prediction System</p>
+        <p>© 2025 FinanceML Pipeline — Bu platformda sunulan tüm tahmin, analiz ve veriler 
+        yalnızca eğitim ve bilgilendirme amaçlıdır. Sunulan içerikler, yapay zekâ modelleri 
+        tarafından otomatik olarak üretilir ve yatırım danışmanlığı kapsamında değildir. 
+        Hiçbir veri, grafik veya tahmin “al”, “sat” ya da “tut” önerisi niteliği taşımaz. 
+        Yatırım kararlarınızı, kişisel risk-getiri tercihlerinize uygun olarak 
+        SPK tarafından yetkilendirilmiş kurumların profesyonel danışmanlarıyla almanız önerilir.</p>
       </footer>
     </motion.div>
   );

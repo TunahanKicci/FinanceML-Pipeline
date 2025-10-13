@@ -1,0 +1,73 @@
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy info
+      run: |
+        echo "🚀 Deploying to ${{ github.event.inputs.environment || 'production' }}"
+        echo "Version: ${{ github.ref_name }}"
+    
+    # Örnek: Docker Swarm/Kubernetes deployment
+    - name: Deploy to server via SSH
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        port: ${{ secrets.DEPLOY_PORT || 22 }}
+        script: |
+          cd /opt/financeml
+          docker compose pull
+          docker compose up -d
+          docker system prune -f
+      continue-on-error: true
+    
+    - name: Health check
+      run: |
+        sleep 30
+        curl -f ${{ secrets.DEPLOY_URL }}/health || exit 1
+      continue-on-error: true
+    
+    - name: Notify on success
+      if: success()
+      run: |
+        echo "✅ Deployment successful!"
+        echo "Environment: ${{ github.event.inputs.environment || 'production' }}"
+        echo "Version: ${{ github.ref_name }}"
+    
+    - name: Rollback on failure
+      if: failure()
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        script: |
+          cd /opt/financeml
+          docker compose down
+          docker compose up -d --force-recreate
+      continue-on-error: true

@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
 
-# Copy requirements from root (context is now root)
+# Copy requirements
 COPY requirements.txt ./
 
 # Install Python packages

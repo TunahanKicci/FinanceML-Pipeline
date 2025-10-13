@@ -1,0 +1,59 @@
+name: Update Data Cache
+
+on:
+  schedule:
+    # Run daily at 6 PM UTC (market kapanışından sonra)
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-cache:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install yfinance pandas numpy
+    
+    - name: Run cache update script
+      run: |
+        python update_cache.py
+      env:
+        PYTHONUNBUFFERED: 1
+    
+    - name: Commit and push if changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+        # Check if there are changes
+        if [[ -n $(git status --porcelain) ]]; then
+          git add data/cache/
+          git commit -m "🤖 Auto-update: Daily cache refresh $(date +'%Y-%m-%d %H:%M')"
+          git push
+          echo "✅ Cache updated and pushed"
+        else
+          echo "ℹ️ No changes detected in cache"
+        fi
+    
+    - name: Create summary
+      run: |
+        echo "### 📊 Cache Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Files Updated:**" >> $GITHUB_STEP_SUMMARY
+        ls -lh data/cache/*.csv | awk '{print "- " $9 " (" $5 ")"}' >> $GITHUB_STEP_SUMMARY

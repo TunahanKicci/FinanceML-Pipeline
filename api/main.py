@@ -112,7 +112,7 @@ def safe_float(val):
     if val is None:
         return None
     
-    # Handle string values (don't process them as numbers)
+    # Handle string values
     if isinstance(val, str):
         return val
     
@@ -368,18 +368,17 @@ async def get_financials(symbol: str):
         import json
         import os
         
-        # Cache dosyasının yolunu belirle
         cache_file = f"/app/data/cache/fundamentals/{symbol.upper()}_fundamentals.json"
         
-        # Dosya var mı kontrol et
+        # Dosya var mı kontrol 
         if not os.path.exists(cache_file):
             return JSONResponse(content={"error": f"No cached data found for {symbol.upper()}"}, status_code=404)
         
-        # JSON dosyasını oku
+        # JSON dosyası
         with open(cache_file, 'r') as f:
             cached_data = json.load(f)
         
-        # fundamentals objesini al
+        # fundamentals objesi
         metrics = cached_data.get("fundamentals", {})
         
         # Frontend için düzenleme (key isimleri küçük harfe çevir)
