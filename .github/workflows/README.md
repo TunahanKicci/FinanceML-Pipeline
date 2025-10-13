@@ -223,3 +223,6 @@ For CI/CD issues:
 3. Contact repository maintainers
 
 **Last Updated:** October 13, 2025
+
+![CI](https://github.com/TunahanKicci/FinanceML-Pipeline/workflows/CI%20-%20Test%20%26%20Lint/badge.svg)
+![Docker](https://github.com/TunahanKicci/FinanceML-Pipeline/workflows/Docker%20Build%20%26%20Push/badge.svg)
