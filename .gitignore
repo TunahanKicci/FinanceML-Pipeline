@@ -62,6 +62,7 @@ coverage.xml
 
 # Data files
 *.csv
+!data/cache/*.csv  # Allow cache CSV files for Render deployment
 *.parquet
 *.feather
 data/raw/

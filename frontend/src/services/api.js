@@ -161,10 +161,17 @@ export const forecastStock = async (symbol, days = 14) => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ symbol, days }),
+        body: JSON.stringify({ 
+          symbol, 
+          days,
+          include_weekends: false  // Add missing field
+        }),
       }
     );
-    if (!response.ok) throw new Error("Forecast request failed");
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.detail || "Forecast request failed");
+    }
     return await response.json();
   } catch (err) {
     throw err;
