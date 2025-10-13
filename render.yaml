@@ -25,7 +25,6 @@ services:
     env: static
     buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
     staticPublishPath: ./frontend/build
-    plan: free
     branch: main
     routes:
       - type: rewrite
@@ -37,7 +36,9 @@ services:
     autoDeploy: true
 
   # Note: Render free tier limitations
+  # - Web services (Docker): Free plan available
+  # - Static sites: Always free (no plan specification needed)
   # - Services spin down after 15 minutes of inactivity
-  # - 750 hours/month free (shared across all services)
+  # - 750 hours/month free for web services
   # - No persistent disk (use external storage if needed)
   # - Database free tier available separately
