@@ -2,8 +2,6 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-COPY node_modules ./node_modules
-
 
 # NPM registry ve timeout ayarlarını yap
 RUN npm config set registry https://registry.npmjs.org/ && \
