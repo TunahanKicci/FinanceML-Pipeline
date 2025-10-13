@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="SvgjsLinearGradient1003" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1"></stop>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1"></stop>
+    </linearGradient>
+    <linearGradient id="SvgjsLinearGradient1002" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1"></stop>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1"></stop>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGradient)"></rect>
+  
+  <!-- Chart bars with AI theme -->
+  <g transform="translate(100, 150)">
+    <!-- Bar 1 -->
+    <rect x="20" y="150" width="40" height="60" fill="#ffffff" opacity="0.3" rx="4"></rect>
+    <!-- Bar 2 -->
+    <rect x="80" y="120" width="40" height="90" fill="#ffffff" opacity="0.5" rx="4"></rect>
+    <!-- Bar 3 -->
+    <rect x="140" y="80" width="40" height="130" fill="#ffffff" opacity="0.7" rx="4"></rect>
+    <!-- Bar 4 -->
+    <rect x="200" y="40" width="40" height="170" fill="url(#chartGradient)" rx="4"></rect>
+    <!-- Bar 5 -->
+    <rect x="260" y="70" width="40" height="140" fill="#ffffff" opacity="0.6" rx="4"></rect>
+  </g>
+  
+  <!-- Trending arrow -->
+  <path d="M 350 200 L 450 140 L 450 180 M 450 140 L 410 140" stroke="#10b981" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+  
+  <!-- AI Neural network nodes -->
+  <g opacity="0.8">
+    <circle cx="120" cy="100" r="8" fill="#ffffff"></circle>
+    <circle cx="180" cy="80" r="8" fill="#ffffff"></circle>
+    <circle cx="240" cy="90" r="8" fill="#ffffff"></circle>
+    <circle cx="180" cy="120" r="8" fill="#ffffff"></circle>
+    
+    <!-- Connections -->
+    <line x1="120" y1="100" x2="180" y2="80" stroke="#ffffff" stroke-width="2" opacity="0.4"></line>
+    <line x1="120" y1="100" x2="180" y2="120" stroke="#ffffff" stroke-width="2" opacity="0.4"></line>
+    <line x1="180" y1="80" x2="240" y2="90" stroke="#ffffff" stroke-width="2" opacity="0.4"></line>
+    <line x1="180" y1="120" x2="240" y2="90" stroke="#ffffff" stroke-width="2" opacity="0.4"></line>
+  </g>
+  
+  <!-- Text ML -->
+  <text x="256" y="440" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#ffffff" text-anchor="middle">ML</text>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
