@@ -61,12 +61,11 @@ app = FastAPI(
 )
 
 # CORS - Allow frontend domains
-# Note: Update with your actual production domain
 allowed_origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Alternative local port
-    "https://*.onrender.com",  # Render deployments
-    # Add your custom domain here:
+    "https://financeml-frontend.onrender.com",  # Render frontend
+    # Add your custom domain here when you have one:
     # "https://yourdomain.me",
     # "https://www.yourdomain.me",
 ]
