@@ -94,7 +94,7 @@ const Dashboard = () => {
                 <form onSubmit={handleForecast} className="prediction-form">
                   <div className="form-group">
                     <label htmlFor="symbol">Stock Symbol</label>
-                    <input type="text" id="symbol" value={symbol} onChange={(e) => setSymbol(e.target.value.toUpperCase())} placeholder="Enter stock symbol (e.g., AAPL)" disabled={loading} required />
+                    <input type="text" id="symbol" value={symbol} readOnly />
                   </div>
                   <button type="submit" className="predict-button" disabled={loading || !symbol}>
                     {loading ? 'Forecasting...' : 'View Full Analysis'}

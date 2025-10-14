@@ -10,6 +10,8 @@ FinanceML Pipeline is an end-to-end machine learning system that provides real-t
 
 **API Documentation:** [https://financeml-api.onrender.com/docs](https://financeml-api.onrender.com/docs)
 
+> **Note:** The application is hosted on Render's free tier. The first request after 15 minutes of inactivity may take 50-90 seconds to respond as the service spins up from sleep mode. Subsequent requests will be fast. This is a known limitation of free-tier hosting and does not reflect the application's actual performance capabilities.
+
 ## Key Features
 
 ### Core Functionality
@@ -303,6 +305,19 @@ PORT=8000
 ```
 
 **Auto-deploy:** Enabled on main branch push
+
+**Free Tier Limitations:**
+- Services enter sleep mode after 15 minutes of inactivity
+- Cold start time: 50-90 seconds for first request
+- Monthly usage: 750 hours per service
+- No persistent disk storage (cache stored in repository)
+- Automatic shutdown and restart on inactivity
+
+For production workloads, consider upgrading to paid tiers which offer:
+- Always-on instances (no cold starts)
+- Persistent storage
+- Dedicated resources
+- Custom domains with SSL
 
 ### Local Production Build
 
