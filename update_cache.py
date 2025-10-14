@@ -40,7 +40,7 @@ class CacheUpdater:
     def update_price_data(self, symbol: str, period: str = "2y", interval: str = "1d"):
         """Update price data cache"""
         try:
-            logger.info(f"📊 Updating price data for {symbol}...")
+            logger.info(f" Updating price data for {symbol}...")
             
             # Rate limiting
             time.sleep(random.uniform(2, 5))
@@ -50,7 +50,7 @@ class CacheUpdater:
                            threads=False, progress=False)
             
             if df.empty:
-                logger.error(f"❌ No price data received for {symbol}")
+                logger.error(f" No price data received for {symbol}")
                 return False
             
             # Flatten multi-level columns if exists (for single symbol)
@@ -61,17 +61,17 @@ class CacheUpdater:
             cache_file = os.path.join(self.cache_dir, f"{symbol}_{period}_{interval}.csv")
             df.to_csv(cache_file)
             
-            logger.info(f"✅ Price data cached for {symbol}: {len(df)} records")
+            logger.info(f" Price data cached for {symbol}: {len(df)} records")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to update price data for {symbol}: {e}")
+            logger.error(f" Failed to update price data for {symbol}: {e}")
             return False
     
     def update_fundamental_data(self, symbol: str):
         """Update fundamental data cache"""
         try:
-            logger.info(f"📈 Updating fundamental data for {symbol}...")
+            logger.info(f" Updating fundamental data for {symbol}...")
             
             # Rate limiting - more aggressive for fundamentals
             time.sleep(random.uniform(5, 10))
@@ -80,7 +80,7 @@ class CacheUpdater:
             info = ticker.info
             
             if not info or len(info) < 10:
-                logger.warning(f"⚠️ Limited fundamental data for {symbol}")
+                logger.warning(f" Limited fundamental data for {symbol}")
                 return False
             
             # Extract fundamental metrics
@@ -145,17 +145,17 @@ class CacheUpdater:
             
             # Count non-null values
             non_null_count = sum(1 for v in fundamental_features.values() if v is not None)
-            logger.info(f"✅ Fundamental data cached for {symbol}: {non_null_count}/25 metrics")
+            logger.info(f" Fundamental data cached for {symbol}: {non_null_count}/25 metrics")
             
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to update fundamental data for {symbol}: {e}")
+            logger.error(f" Failed to update fundamental data for {symbol}: {e}")
             return False
     
     def update_all_price_data(self):
         """Update price data for all symbols"""
-        logger.info("🚀 Starting price data update for all symbols...")
+        logger.info(" Starting price data update for all symbols...")
         
         all_symbols = self.symbols + self.market_symbols
         successful = 0
@@ -165,13 +165,13 @@ class CacheUpdater:
                 successful += 1
             
             # Progress update
-            logger.info(f"📊 Progress: {successful}/{len(all_symbols)} symbols updated")
+            logger.info(f" Progress: {successful}/{len(all_symbols)} symbols updated")
         
-        logger.info(f"✅ Price data update complete: {successful}/{len(all_symbols)} successful")
+        logger.info(f" Price data update complete: {successful}/{len(all_symbols)} successful")
     
     def update_all_fundamental_data(self):
         """Update fundamental data for all symbols"""
-        logger.info("📈 Starting fundamental data update for all symbols...")
+        logger.info(" Starting fundamental data update for all symbols...")
         
         successful = 0
         
@@ -180,16 +180,16 @@ class CacheUpdater:
                 successful += 1
             
             # Progress update
-            logger.info(f"📈 Progress: {successful}/{len(self.symbols)} symbols updated")
+            logger.info(f" Progress: {successful}/{len(self.symbols)} symbols updated")
         
-        logger.info(f"✅ Fundamental data update complete: {successful}/{len(self.symbols)} successful")
+        logger.info(f" Fundamental data update complete: {successful}/{len(self.symbols)} successful")
     
     def update_all(self):
         """Update both price and fundamental data"""
-        logger.info("🔄 Starting complete cache update...")
+        logger.info(" Starting complete cache update...")
         
         print("=" * 60)
-        print("📊 FINANCEML CACHE UPDATER")
+        print(" FINANCEML CACHE UPDATER")
         print("=" * 60)
         print(f"Updating data for symbols: {', '.join(self.symbols)}")
         print(f"Market indices: {', '.join(self.market_symbols)}")
@@ -206,9 +206,9 @@ class CacheUpdater:
         
         print()
         print("=" * 60)
-        print("✅ CACHE UPDATE COMPLETE!")
+        print(" CACHE UPDATE COMPLETE!")
         print("=" * 60)
-        print("🐳 You can now start Docker containers with fresh data:")
+        print(" You can now start Docker containers with fresh data:")
         print("   docker compose up -d")
         print("=" * 60)
 
@@ -219,10 +219,10 @@ def main():
         updater.update_all()
         
     except KeyboardInterrupt:
-        print("\n⚠️ Update cancelled by user")
+        print("\n Update cancelled by user")
     except Exception as e:
-        logger.error(f"❌ Update failed: {e}")
-        print(f"\n❌ Error: {e}")
+        logger.error(f" Update failed: {e}")
+        print(f"\n Error: {e}")
 
 if __name__ == "__main__":
     main()

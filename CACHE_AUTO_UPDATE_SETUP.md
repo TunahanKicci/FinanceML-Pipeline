@@ -1,9 +1,9 @@
-# 📅 Otomatik Cache Güncelleme Kurulumu
+# Otomatik Cache Güncelleme Kurulumu
 
-## 🎯 Amaç
+## Amaç
 Her gün saat 18:00'de otomatik olarak Yahoo Finance'den veri çekerek cache'i güncel tutmak.
 
-## 🔧 Windows Task Scheduler Kurulumu
+## Windows Task Scheduler Kurulumu
 
 ### Adım 1: Task Scheduler'ı Aç
 ```
@@ -19,17 +19,17 @@ Win + R → taskschd.msc → Enter
    - **Start in**: `C:\proje\FinanceML-Pipeline`
 
 ### Adım 3: Ek Ayarlar
-- ✅ **Run whether user is logged on or not**
-- ✅ **Run with highest privileges**
-- ✅ **Configure for: Windows 10/11**
+- **Run whether user is logged on or not**
+- **Run with highest privileges**
+- **Configure for: Windows 10/11**
 
-## 📋 Manuel Test
+## Manuel Test
 ```powershell
 cd C:\proje\FinanceML-Pipeline
 .\update_and_reload.ps1
 ```
 
-## 🐳 Docker Volume Mount Nasıl Çalışır?
+## Docker Volume Mount Nasıl Çalışır?
 
 ### docker-compose.yml'de:
 ```yaml
@@ -38,11 +38,11 @@ volumes:
 ```
 
 Bu sayede:
-1. ✅ Local'de `update_cache.py` çalıştırınca `data/cache/` güncellenir
-2. ✅ Docker container aynı klasöre mount edildiği için **otomatik** görür
-3. ✅ Container restart gerekmez! (Read-only access)
+1. Local'de `update_cache.py` çalıştırınca `data/cache/` güncellenir
+2. Docker container aynı klasöre mount edildiği için **otomatik** görür
+3. Container restart gerekmez! (Read-only access)
 
-## 🔍 Kontrol
+## Kontrol
 
 ### Cache Güncellenmiş mi?
 ```powershell
@@ -54,7 +54,7 @@ Get-ChildItem data/cache/*.csv | Select-Object Name, LastWriteTime
 docker exec financeml_api ls -lh /app/data/cache/
 ```
 
-## ⏰ Zamanlama Önerileri
+## Zamanlama Önerileri
 
 | Zamanlama | Neden |
 |-----------|-------|
@@ -62,7 +62,7 @@ docker exec financeml_api ls -lh /app/data/cache/
 | **09:00** | Sabah erken güncelleme (pre-market) |
 | **00:00** | Gece yarısı batch job |
 
-## 🚨 Sorun Giderme
+## Sorun Giderme
 
 ### Problem: Script çalışmıyor
 ```powershell
@@ -85,7 +85,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 docker exec financeml_api stat /app/data/cache/AAPL_2y_1d.csv
 ```
 
-## 📊 Monitoring
+## Monitoring
 
 ### Log Dosyası
 Script output'u yakalamak için:
@@ -96,14 +96,14 @@ Start-Transcript -Path "logs/cache_update_$(Get-Date -Format 'yyyy-MM-dd').log"
 Stop-Transcript
 ```
 
-## ✅ Avantajlar
+## Avantajlar
 
 1. **Sıfır Downtime**: Container restart yok
 2. **Real-time**: Dosya güncellenince anında aktif
 3. **Basit**: Ek konfigürasyon gerekmez
 4. **Güvenli**: Read-only mount (container veriyi değiştiremiyor)
 
-## 🎓 İleri Seviye
+## İleri Seviye
 
 ### Farklı Cache Stratejileri
 
@@ -129,7 +129,7 @@ if ([int](Get-Date).DayOfWeek -ge 1 -and [int](Get-Date).DayOfWeek -le 5) {
 }
 ```
 
-## 🔐 Güvenlik
+## Güvenlik
 
 ### API Key'leri Koruma
 `.env` dosyasında sakla:
@@ -142,4 +142,4 @@ Task Scheduler'da `.env` dosyası otomatik yüklenir (script'te tanımlı).
 
 ---
 
-**🎉 Artık cache'iniz her gün otomatik güncellenecek ve Docker anında kullanacak!**
+Artık cache'iniz her gün otomatik güncellenecek ve Docker anında kullanacak!

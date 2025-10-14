@@ -497,7 +497,7 @@ async def get_financials(symbol: str):
 async def startup_event():
     global prediction_service, forecasting_service , sentiment_analyzer, risk_analyzer, portfolio_optimizer
     
-    logger.info("🚀 Starting FinanceML API...")
+    logger.info(" Starting FinanceML API...")
     
     try:
         prediction_service = PredictionService()
@@ -505,9 +505,9 @@ async def startup_event():
         sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key=os.getenv("NEWS_API_KEY"))
         risk_analyzer = RiskAnalyzer(cache_dir="/app/data/cache")
         portfolio_optimizer = PortfolioOptimizer(risk_free_rate=0.02, cache_dir="/app/data/cache")
-        logger.info("✅ Services initialized")
+        logger.info(" Services initialized")
     except Exception as e:
-        logger.error(f"❌ Failed to initialize: {str(e)}")
+        logger.error(f" Failed to initialize: {str(e)}")
         raise
 
 @app.get("/sentiment/{symbol}")

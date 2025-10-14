@@ -1,6 +1,6 @@
 # FinanceML Pipeline - Quick Start Guide
 
-## 🚀 Hızlı Başlangıç
+## Hızlı Başlangıç
 
 ### 1. Cache'i Güncelle (Opsiyonel ama önerili)
 
@@ -14,7 +14,7 @@ Bu komut:
 - Fundamental verileri günceller
 - Her şeyi `data/cache/` dizinine kaydeder
 
-⏱️ **Süre**: ~2-3 dakika
+**Süre**: ~2-3 dakika
 
 ### 2. Docker Container'ları Başlat
 
@@ -29,8 +29,8 @@ Bu komut:
 - Grafana (Dashboards) - Port 3001
 - cAdvisor (Container metrics) - Port 8080
 
-⏱️ **İlk build**: ~5-8 dakika
-⏱️ **Sonraki başlatmalar**: ~30 saniye
+**İlk build**: ~5-8 dakika
+**Sonraki başlatmalar**: ~30 saniye
 
 ### 3. Servislerin Durumunu Kontrol Et
 
@@ -40,7 +40,7 @@ docker ps
 
 Tüm container'lar "Up" ve "healthy" statüsünde olmalı.
 
-## 🌐 Servislere Erişim
+## Servislere Erişim
 
 ### Frontend (Web UI)
 ```
@@ -80,7 +80,7 @@ http://localhost:8080
 ```
 - Container CPU, memory, network metrikleri
 
-## 📊 API Endpoint'leri
+## API Endpoint'leri
 
 ### 1. Financial Metrics (Temel Analiz)
 ```powershell
@@ -131,7 +131,7 @@ Invoke-WebRequest -Uri "http://localhost:8000/sentiment/AAPL" | Select-Object -E
 
 **Response**: Pozitif/negatif/nötr haber analizi
 
-## 🛑 Servisleri Durdur
+## Servisleri Durdur
 
 ```powershell
 docker-compose down
@@ -142,7 +142,7 @@ Volume'leri de silmek için (tüm verileri temizler):
 docker-compose down -v
 ```
 
-## 🔄 Cache'i Otomatik Güncelleme
+## Cache'i Otomatik Güncelleme
 
 Cache her 24 saatte bir otomatik güncellenir (GitHub Actions).
 
@@ -151,7 +151,7 @@ Manuel güncellemek için:
 python update_cache.py
 ```
 
-## 📈 Monitoring Query Örnekleri
+## Monitoring Query Örnekleri
 
 Prometheus'ta (http://localhost:9090) şu query'leri deneyin:
 
@@ -172,7 +172,7 @@ sum by (endpoint) (rate(http_requests_total[5m]))
 rate(http_requests_total{status=~"5.."}[5m])
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Container başlamıyor
 ```powershell
@@ -207,22 +207,22 @@ docker-compose up -d
 - Prometheus'ta latency'e bak: http://localhost:9090
 - API logs: `docker-compose logs api`
 
-## 📚 Detaylı Dokümantasyon
+## Detaylı Dokümantasyon
 
 - **Monitoring**: `docs/MONITORING.md`
 - **API Endpoints**: http://localhost:8000/docs
 - **CI/CD Pipeline**: `.github/workflows/`
 - **Architecture**: `README.md`
 
-## 🎯 Sonraki Adımlar
+## Sonraki Adımlar
 
-1. ✅ Servisleri başlat
-2. ✅ Frontend'i aç (http://localhost:3000)
-3. ✅ API'yi test et (http://localhost:8000/docs)
-4. ✅ Grafana dashboard'u incele (http://localhost:3001)
-5. ✅ Prometheus query'leri dene (http://localhost:9090)
+1. Servisleri başlat
+2. Frontend'i aç (http://localhost:3000)
+3. API'yi test et (http://localhost:8000/docs)
+4. Grafana dashboard'u incele (http://localhost:3001)
+5. Prometheus query'leri dene (http://localhost:9090)
 
-## 💡 Tips
+## Tips
 
 - Cache güncellemesi sabah piyasa açılmadan yapılmalı
 - API container'ı ilk başlatmada model yüklediği için 30-40 saniye alır
@@ -232,4 +232,4 @@ docker-compose up -d
 
 ---
 
-**Başarılı bir başlangıç için tüm adımları sırayla takip edin!** 🚀
+Başarılı bir başlangıç için tüm adımları sırayla takip edin!

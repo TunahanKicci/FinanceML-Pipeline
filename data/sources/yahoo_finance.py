@@ -31,20 +31,20 @@ class YahooFinanceClient:
             DataFrame: OHLCV verileri
         """
         try:
-            print(f"📊 Fetching data for {symbol}...")
+            print(f" Fetching data for {symbol}...")
             stock = yf.Ticker(symbol)
             df = stock.history(period=period, interval=interval)
             
             if df.empty:
                 raise ValueError(f"No data found for {symbol}")
             
-            print(f"✅ Downloaded {len(df)} records for {symbol}")
-            print(f"📅 Date range: {df.index[0]} to {df.index[-1]}")
+            print(f" Downloaded {len(df)} records for {symbol}")
+            print(f" Date range: {df.index[0]} to {df.index[-1]}")
             
             return df
         
         except Exception as e:
-            print(f"❌ Error fetching {symbol}: {str(e)}")
+            print(f" Error fetching {symbol}: {str(e)}")
             raise
     
     def fetch_multiple_stocks(
@@ -58,7 +58,7 @@ class YahooFinanceClient:
             try:
                 data[symbol] = self.fetch_stock_data(symbol, period)
             except Exception as e:
-                print(f"⚠️ Skipping {symbol}: {str(e)}")
+                print(f" Skipping {symbol}: {str(e)}")
         return data
 
 
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # Test: Apple hissesini çek
     df = client.fetch_stock_data("AAPL", period="1y")
     
-    print("\n📊 Data Preview:")
+    print("\n Data Preview:")
     print(df.head())
-    print(f"\n📈 Shape: {df.shape}")
-    print(f"\n📋 Columns: {df.columns.tolist()}")
+    print(f"\n Shape: {df.shape}")
+    print(f"\n Columns: {df.columns.tolist()}")

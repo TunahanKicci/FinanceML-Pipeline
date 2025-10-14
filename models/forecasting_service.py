@@ -42,7 +42,7 @@ class CachedDataClient:
                 logger.error(f"Empty data for {symbol}")
                 raise ValueError(f"No data found for {symbol}")
             
-            logger.info(f"✅ Loaded {len(df)} records from cache for {symbol}")
+            logger.info(f" Loaded {len(df)} records from cache for {symbol}")
             return df
             
         except Exception as e:

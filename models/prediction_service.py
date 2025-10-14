@@ -43,7 +43,7 @@ class PredictionService:
             Dict: Tahmin sonuçları
         """
         try:
-            logger.info(f"🔮 Predicting {symbol} for {days_ahead} days ahead")
+            logger.info(f" Predicting {symbol} for {days_ahead} days ahead")
             
             df = self.data_client.fetch_stock_data(
                 symbol,
@@ -71,21 +71,21 @@ class PredictionService:
             with open(feature_columns_path) as f:
                 feature_columns = json.load(f)
             
-            print(f"📋 Model bekliyor: {len(feature_columns)} features")
-            print(f"📋 Feature columns: {feature_columns}")
+            print(f" Model bekliyor: {len(feature_columns)} features")
+            print(f" Feature columns: {feature_columns}")
             
             # 6. Target'ı çıkar
             features_df = last_sequence.drop([target_col], axis=1, errors='ignore')
             
-            print(f"📊 Mevcut features: {list(features_df.columns)}")
-            print(f"📊 Mevcut features sayısı: {len(features_df.columns)}")
+            print(f" Mevcut features: {list(features_df.columns)}")
+            print(f" Mevcut features sayısı: {len(features_df.columns)}")
             
             # 7. CRITICAL: Feature columns ile reindex et
             # Eksik kolonlar 0 ile doldurulur, fazla kolonlar atılır
             features_df = features_df.reindex(columns=feature_columns, fill_value=0.0)
             
-            print(f"✅ Reindex sonrası: {features_df.shape}")
-            print(f"✅ Final features: {list(features_df.columns)}")
+            print(f" Reindex sonrası: {features_df.shape}")
+            print(f" Final features: {list(features_df.columns)}")
             
             feature_data = features_df.values
             target_data = last_sequence[[target_col]].values
@@ -97,7 +97,7 @@ class PredictionService:
             # 9. Sequence oluştur
             X = np.array([feature_scaled])  # (1, 60, features)
             
-            print(f"📐 Input shape to model: {X.shape}")
+            print(f" Input shape to model: {X.shape}")
             
             # 10. Tahmin yap
             prediction = self.model_loader.predict(X)
@@ -122,12 +122,12 @@ class PredictionService:
                 "timestamp": datetime.now().isoformat()
             }
             
-            logger.info(f"✅ Prediction complete: {symbol} ${predicted_price:.2f} ({price_change_pct:+.2f}%)")
+            logger.info(f" Prediction complete: {symbol} ${predicted_price:.2f} ({price_change_pct:+.2f}%)")
             
             return result
             
         except Exception as e:
-            logger.error(f"❌ Prediction failed: {str(e)}")
+            logger.error(f" Prediction failed: {str(e)}")
             raise
     
     def get_model_status(self) -> Dict:
@@ -155,7 +155,7 @@ if __name__ == "__main__":
             
             result = service.predict_next_day(symbol)
             
-            print(f"\n📊 Prediction Results:")
+            print(f"\n Prediction Results:")
             print(f"  Symbol:           {result['symbol']}")
             print(f"  Current Price:    ${result['current_price']}")
             print(f"  Predicted Price:  ${result['predicted_price']}")
@@ -166,7 +166,7 @@ if __name__ == "__main__":
             break  # İlk başarılı tahmin sonrası dur
             
         except Exception as e:
-            print(f"❌ Failed: {str(e)}")
+            print(f" Failed: {str(e)}")
             import traceback
             traceback.print_exc()
             continue

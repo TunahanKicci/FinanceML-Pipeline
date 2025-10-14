@@ -190,19 +190,19 @@ class StableStockPredictor:
         # 1. Model kaydet (keras native)
         model_path = f'{artifacts_dir}/{symbol}_model.keras'
         self.model.save(model_path)
-        print(f"✅ Model saved: {model_path}")
+        print(f" Model saved: {model_path}")
 
         # 2. Scalers kaydet
         with open(f'{artifacts_dir}/feature_scaler.pkl', 'wb') as f:
             pickle.dump(self.feature_scaler, f)
         with open(f'{artifacts_dir}/target_scaler.pkl', 'wb') as f:
             pickle.dump(self.target_scaler, f)
-        print("✅ Scalers saved")
+        print(" Scalers saved")
 
         # 3. Feature columns kaydet
         with open(f'{artifacts_dir}/feature_columns.json', 'w') as f:
             json.dump(feature_columns, f, indent=2)
-        print(f"✅ Features saved ({len(feature_columns)} columns)")
+        print(f" Features saved ({len(feature_columns)} columns)")
 
         # 4. Metadata kaydet
         metadata = {
@@ -217,12 +217,12 @@ class StableStockPredictor:
         }
         with open(f'{artifacts_dir}/model_metadata.json', 'w') as f:
             json.dump(metadata, f, indent=2)
-        print("✅ Metadata saved")
+        print(" Metadata saved")
 
         # 5. Training dataset kaydet (CSV)
         # Bu kısmı train_single_stock metodunda zaten yapıyorsunuz, burada gerek yok
 
-        print(f"\n📦 All artifacts saved to: {artifacts_dir}/")
+        print(f"\n All artifacts saved to: {artifacts_dir}/")
         print(f"   - {symbol}_model.keras")
         print(f"   - feature_scaler.pkl")
         print(f"   - target_scaler.pkl")
@@ -246,7 +246,7 @@ class StableStockPredictor:
             )
             train_df['Target_Return'] = y_train
             train_df.to_csv(f'{artifacts_dir}/{symbol}_training_set.csv', index=False)
-            print(f"✅ Training dataset saved as CSV for {symbol}")
+            print(f" Training dataset saved as CSV for {symbol}")
 
             input_shape = (X_train.shape[1], X_train.shape[2])
             self.build_model(input_shape)
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     with open('models/artifacts/training_summary.json', 'w') as f:
         json.dump(results, f, indent=2)
 
-    print("\n✅ Training finished. Summary: models/artifacts/training_summary.json")
+    print("\n Training finished. Summary: models/artifacts/training_summary.json")
 
     with open('models/artifacts/training_summary.json', 'w') as f:
         json.dump(results, f, indent=2)

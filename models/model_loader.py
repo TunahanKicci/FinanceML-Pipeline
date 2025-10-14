@@ -42,14 +42,14 @@ class ModelLoader:
             if not os.path.exists(model_path):
                 raise FileNotFoundError(f"Model not found: {model_path}")
 
-            logger.info(f"📦 Loading model from {model_path}")
+            logger.info(f" Loading model from {model_path}")
             self.model = keras.models.load_model(model_path)
-            logger.info("✅ Model loaded successfully")
+            logger.info(" Model loaded successfully")
 
             return self.model
 
         except Exception as e:
-            logger.error(f"❌ Error loading model: {str(e)}")
+            logger.error(f" Error loading model: {str(e)}")
             raise
 
     # -----------------------------------------------------------
@@ -71,11 +71,11 @@ class ModelLoader:
             with open(label_scaler_path, "rb") as f:
                 self.label_scaler = pickle.load(f)
 
-            logger.info("✅ Scalers loaded successfully")
+            logger.info(" Scalers loaded successfully")
             return self.feature_scaler, self.label_scaler
 
         except Exception as e:
-            logger.error(f"❌ Error loading scalers: {str(e)}")
+            logger.error(f" Error loading scalers: {str(e)}")
             raise
 
     # -----------------------------------------------------------
@@ -92,11 +92,11 @@ class ModelLoader:
             with open(metadata_path, "r") as f:
                 self.metadata = json.load(f)
 
-            logger.info("✅ Metadata loaded successfully")
+            logger.info(" Metadata loaded successfully")
             return self.metadata
 
         except Exception as e:
-            logger.error(f"❌ Error loading metadata: {str(e)}")
+            logger.error(f" Error loading metadata: {str(e)}")
             raise
 
     # -----------------------------------------------------------
@@ -105,17 +105,17 @@ class ModelLoader:
     def load_all(self) -> bool:
         """Tüm artifactları (model, scaler, metadata) yükle"""
         try:
-            logger.info(f"🔄 Loading all artifacts for symbol: {self.symbol}")
+            logger.info(f" Loading all artifacts for symbol: {self.symbol}")
             self.load_model()
             self.load_scalers()
             self.load_metadata()
 
             self.is_loaded = True
-            logger.info("✅ All artifacts loaded successfully!")
+            logger.info(" All artifacts loaded successfully!")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to load artifacts: {str(e)}")
+            logger.error(f" Failed to load artifacts: {str(e)}")
             self.is_loaded = False
             return False
 
@@ -161,11 +161,11 @@ if __name__ == "__main__":
     
     if loader.load_all():
         info = loader.get_model_info()
-        print("\n📊 Model Info:")
+        print("\n Model Info:")
         for k, v in info.items():
             print(f"  {k}: {v}")
 
-        print("\n🧪 Testing dummy prediction...")
+        print("\n Testing dummy prediction...")
         dummy_input = np.random.rand(1, 60, 13)  # (batch, seq, features)
         pred = loader.predict(dummy_input)
-        print(f"✅ Dummy prediction: {pred[0][0]:.5f}")
+        print(f" Dummy prediction: {pred[0][0]:.5f}")
