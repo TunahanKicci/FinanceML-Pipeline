@@ -207,47 +207,57 @@ def calculate_financial_score(metrics: dict) -> dict:
     
     # ========== VALUATION (25 points) ==========
     
-    # P/E Ratio (10 points)
+    # P/E Ratio (10 points) - Adjusted for tech/growth stocks
     pe = metrics.get('pe_ratio')
     if pe is not None and pe > 0:
-        if 10 < pe < 20:
+        if 12 < pe < 25:
             score += 10
             factors.append("Ideal P/E ratio")
-        elif 5 < pe < 30:
-            score += 7
+        elif 8 < pe < 35:
+            score += 8
             factors.append("Good P/E ratio")
-        elif pe < 40:
-            score += 4
+        elif pe < 50:
+            score += 6
             factors.append("Fair P/E ratio")
+        elif pe < 100:
+            score += 4
+            factors.append("Growth stock valuation")
         else:
             score += 2
-            factors.append("High P/E ratio")
+            factors.append("Premium valuation")
     
-    # PEG Ratio (8 points)
+    # PEG Ratio (8 points) - More lenient for growth
     peg = metrics.get('peg_ratio')
     if peg is not None and peg > 0:
-        if peg < 1:
+        if peg < 1.2:
             score += 8
-            factors.append("Undervalued (PEG < 1)")
-        elif peg < 1.5:
+            factors.append("Attractive valuation (PEG < 1.2)")
+        elif peg < 2.0:
             score += 6
-            factors.append("Fair valuation (PEG < 1.5)")
-        elif peg < 2:
-            score += 3
-            factors.append("Slightly overvalued")
+            factors.append("Fair valuation (PEG < 2.0)")
+        elif peg < 3.0:
+            score += 4
+            factors.append("Moderate valuation")
+        else:
+            score += 2
     
-    # Price to Book (7 points)
+    # Price to Book (7 points) - Adjusted for intangible-heavy companies
     pb = metrics.get('price_to_book')
     if pb is not None and pb > 0:
-        if pb < 1:
+        if pb < 2:
             score += 7
-            factors.append("Trading below book value")
-        elif pb < 3:
-            score += 5
-            factors.append("Reasonable P/B ratio")
+            factors.append("Trading below 2x book value")
         elif pb < 5:
-            score += 3
+            score += 6
+            factors.append("Reasonable P/B ratio")
+        elif pb < 10:
+            score += 5
             factors.append("Moderate P/B ratio")
+        elif pb < 20:
+            score += 3
+            factors.append("Asset-light business model")
+        else:
+            score += 1
     
     # ========== PROFITABILITY (25 points) ==========
     
@@ -386,23 +396,23 @@ def calculate_financial_score(metrics: dict) -> dict:
     
     percentage = (score / max_score) * 100
     
-    if percentage >= 90:
+    if percentage >= 85:
         rating = "Exceptional"
         interpretation = "Outstanding financial health across all metrics"
         color = "#10b981"
-    elif percentage >= 75:
+    elif percentage >= 70:
         rating = "Excellent"
         interpretation = "Strong financial fundamentals with minor concerns"
         color = "#3b82f6"
-    elif percentage >= 60:
+    elif percentage >= 55:
         rating = "Good"
         interpretation = "Solid financial position with some areas for improvement"
         color = "#8b5cf6"
-    elif percentage >= 45:
+    elif percentage >= 40:
         rating = "Fair"
         interpretation = "Mixed financial indicators, requires careful analysis"
         color = "#f59e0b"
-    elif percentage >= 30:
+    elif percentage >= 25:
         rating = "Poor"
         interpretation = "Weak fundamentals with significant risks"
         color = "#ef4444"

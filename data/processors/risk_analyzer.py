@@ -322,61 +322,82 @@ class RiskAnalyzer:
             risk_score = 0
             risk_factors = []
             
-            # Beta assessment
+            # Beta assessment - More realistic thresholds
             if beta is not None:
-                if beta > 1.5:
+                if beta > 2.0:
                     risk_score += 30
+                    risk_factors.append("Very high market sensitivity")
+                elif beta > 1.5:
+                    risk_score += 20
                     risk_factors.append("High market sensitivity")
                 elif beta > 1.2:
-                    risk_score += 20
+                    risk_score += 10
                     risk_factors.append("Above-average volatility")
-                elif beta < 0.8:
+                elif beta > 0.8:
+                    risk_score += 0
+                    risk_factors.append("Average market correlation")
+                else:
                     risk_score -= 10
                     risk_factors.append("Low market correlation")
             
-            # Volatility assessment
+            # Volatility assessment - Adjusted for large caps
             if volatility:
                 vol = volatility['annual_volatility']
-                if vol > 0.40:
+                if vol > 0.60:
                     risk_score += 30
                     risk_factors.append("Very high volatility")
-                elif vol > 0.25:
+                elif vol > 0.40:
                     risk_score += 20
                     risk_factors.append("High volatility")
+                elif vol > 0.25:
+                    risk_score += 10
+                    risk_factors.append("Moderate volatility")
                 elif vol < 0.15:
                     risk_score -= 10
                     risk_factors.append("Low volatility")
             
-            # Sharpe ratio assessment
+            # Sharpe ratio assessment - More balanced
             if sharpe is not None:
-                if sharpe < 0:
-                    risk_score += 20
+                if sharpe < -0.5:
+                    risk_score += 25
                     risk_factors.append("Negative risk-adjusted returns")
+                elif sharpe < 0:
+                    risk_score += 15
+                    risk_factors.append("Poor risk-adjusted returns")
+                elif sharpe > 3:
+                    risk_score -= 25
+                    risk_factors.append("Exceptional risk-adjusted returns")
                 elif sharpe > 2:
-                    risk_score -= 20
+                    risk_score -= 15
                     risk_factors.append("Excellent risk-adjusted returns")
+                elif sharpe > 1:
+                    risk_score -= 5
+                    risk_factors.append("Good risk-adjusted returns")
             
-            # Max drawdown assessment
+            # Max drawdown assessment - More realistic
             if max_dd:
                 dd_pct = abs(max_dd['max_drawdown_pct'])
-                if dd_pct > 50:
+                if dd_pct > 70:
                     risk_score += 30
                     risk_factors.append("Severe historical drawdown")
-                elif dd_pct > 30:
+                elif dd_pct > 50:
                     risk_score += 20
                     risk_factors.append("Significant historical drawdown")
+                elif dd_pct > 30:
+                    risk_score += 10
+                    risk_factors.append("Moderate historical drawdown")
             
-            # Risk rating
-            if risk_score > 50:
+            # Risk rating - More balanced scale
+            if risk_score > 60:
                 risk_rating = "Very High Risk"
                 risk_color = "#dc2626"
-            elif risk_score > 30:
+            elif risk_score > 35:
                 risk_rating = "High Risk"
                 risk_color = "#f59e0b"
-            elif risk_score > 10:
+            elif risk_score > 15:
                 risk_rating = "Moderate Risk"
                 risk_color = "#3b82f6"
-            elif risk_score > -10:
+            elif risk_score > -5:
                 risk_rating = "Low Risk"
                 risk_color = "#10b981"
             else:
