@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T15:18:32.174537",
+  "trained_on": "2025-10-14T14:40:34.694431",
   "symbol": "NVDA",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.01350546979121231,
-    "return_rmse": 0.01734463290703607,
-    "return_r2": -0.015196928374217933,
-    "directional_accuracy_pct": 59.79381443298969,
-    "price_mae": 2.205816699193547,
-    "price_rmse": 2.844202401152578,
-    "price_mape_pct": 1.3444945282138578,
-    "price_r2": 0.971771516683276
+    "return_mae": 0.014377259524265036,
+    "return_rmse": 0.018440055036623843,
+    "return_r2": -0.03154722319046943,
+    "directional_accuracy_pct": 51.546391752577314,
+    "price_mae": 2.3939243976078637,
+    "price_rmse": 3.0951355775932563,
+    "price_mape_pct": 1.4301543189969936,
+    "price_r2": 0.9612499415016079
   },
   "prediction_type": "return"
 }

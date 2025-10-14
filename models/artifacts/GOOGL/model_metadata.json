@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T15:17:37.832604",
+  "trained_on": "2025-10-14T14:39:58.297957",
   "symbol": "GOOGL",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.011800954206330354,
-    "return_rmse": 0.016947893019280413,
-    "return_r2": -0.07915645052571829,
-    "directional_accuracy_pct": 48.45360824742268,
-    "price_mae": 2.2972482444271787,
-    "price_rmse": 3.3856841463216782,
-    "price_mape_pct": 1.1644970922721178,
-    "price_r2": 0.98579891710687
+    "return_mae": 0.012618756423991942,
+    "return_rmse": 0.017837315253500987,
+    "return_r2": -0.1474962813909142,
+    "directional_accuracy_pct": 38.144329896907216,
+    "price_mae": 2.5421619000916507,
+    "price_rmse": 3.665423242117581,
+    "price_mape_pct": 1.24526855890855,
+    "price_r2": 0.9841940132002313
   },
   "prediction_type": "return"
 }

@@ -1,19 +1,19 @@
 {
   "model_version": "v3.0.0",
   "model_type": "LSTM_Return_Prediction",
-  "trained_on": "2025-10-06T15:18:04.029264",
+  "trained_on": "2025-10-14T14:40:16.960078",
   "symbol": "TSLA",
   "sequence_length": 60,
   "feature_count": 21,
   "metrics": {
-    "return_mae": 0.025623237181118183,
-    "return_rmse": 0.03450644533861265,
-    "return_r2": -0.06693612367993773,
-    "directional_accuracy_pct": 48.45360824742268,
-    "price_mae": 8.8308899364415,
-    "price_rmse": 11.870402780322758,
-    "price_mape_pct": 2.573385395546575,
-    "price_r2": 0.9166745915601036
+    "return_mae": 0.03237447897425692,
+    "return_rmse": 0.0415112976571987,
+    "return_r2": -0.43272637076972775,
+    "directional_accuracy_pct": 44.329896907216494,
+    "price_mae": 11.48084538708302,
+    "price_rmse": 14.879666729522302,
+    "price_mape_pct": 3.2115722967486056,
+    "price_r2": 0.8976815001708014
   },
   "prediction_type": "return"
 }
