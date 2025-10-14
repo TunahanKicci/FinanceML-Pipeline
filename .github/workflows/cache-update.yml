@@ -41,19 +41,19 @@ jobs:
         # Check if there are changes
         if [[ -n $(git status --porcelain) ]]; then
           git add data/cache/
-          git commit -m "🤖 Auto-update: Daily cache refresh $(date +'%Y-%m-%d %H:%M')"
+          git commit -m " Auto-update: Daily cache refresh $(date +'%Y-%m-%d %H:%M')"
           git push
-          echo "✅ Cache updated and pushed"
+          echo " Cache updated and pushed"
         else
-          echo "ℹ️ No changes detected in cache"
+          echo "ℹ No changes detected in cache"
         fi
     
     - name: Create summary
       run: |
-        echo "### 📊 Cache Update Summary" >> $GITHUB_STEP_SUMMARY
+        echo "###  Cache Update Summary" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:**  Success" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "**Files Updated:**" >> $GITHUB_STEP_SUMMARY
         ls -lh data/cache/*.csv | awk '{print "- " $9 " (" $5 ")"}' >> $GITHUB_STEP_SUMMARY
