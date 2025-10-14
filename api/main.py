@@ -492,7 +492,7 @@ async def startup_event():
     try:
         prediction_service = PredictionService()
         forecasting_service = ForecastingService(cache_dir="/app/data/cache")
-        sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key="96195a56e9224ebf8d25d17d42ec3ba9")
+        sentiment_analyzer = SentimentAnalyzer(min_news_threshold=1, news_api_key=os.getenv("NEWS_API_KEY"))
         risk_analyzer = RiskAnalyzer(cache_dir="/app/data/cache")
         portfolio_optimizer = PortfolioOptimizer(risk_free_rate=0.02, cache_dir="/app/data/cache")
         logger.info("✅ Services initialized")
