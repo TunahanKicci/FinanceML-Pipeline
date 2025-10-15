@@ -5,6 +5,14 @@
 [![Original Repo](https://img.shields.io/badge/Original-This%20Repo-green)](https://github.com/TunahanKicci/FinanceML-Pipeline)
 [![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202024-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
 
+> **⚠️ USAGE RESTRICTION NOTICE**
+> 
+> This repository is **ALL RIGHTS RESERVED**. You may view the code for educational purposes only.
+> 
+> **PROHIBITED:** Copying, forking, cloning, modifying, distributing, or using this code in any project (personal or commercial).
+> 
+> **Violations will be reported** to GitHub and may result in DMCA takedown notices.
+
 AI-powered stock market analysis and forecasting platform with production-ready MLOps infrastructure.
 
 ## Overview
