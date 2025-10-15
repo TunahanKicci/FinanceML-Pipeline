@@ -1,6 +1,10 @@
 # api/main.py
 """
-FastAPI Main Application
+FinanceML Pipeline - FastAPI Main Application
+
+Copyright (c) 2025 Tunahan Kicci
+Licensed under MIT License
+Original repository: https://github.com/TunahanKicci/FinanceML-Pipeline
 """
 from models.forecasting_service import ForecastingService
 from fastapi import FastAPI, HTTPException

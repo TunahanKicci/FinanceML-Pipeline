@@ -417,6 +417,41 @@ python update_cache.py
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+### Copyright Notice
+
+**© 2025 Tunahan Kicci. All Rights Reserved.**
+
+This project is the original work of Tunahan Kicci, developed as part of a computer science portfolio.
+
+**Project Authenticity:**
+- Original repository: [github.com/TunahanKicci/FinanceML-Pipeline](https://github.com/TunahanKicci/FinanceML-Pipeline)
+- First commit: Check repository history for verification
+- Author: Tunahan Kicci ([@TunahanKicci](https://github.com/TunahanKicci))
+- Commit history and development timeline are publicly verifiable
+
+**Usage Rights:**
+While this project is open-source under MIT License, users must:
+- Provide proper attribution to the original author (Tunahan Kicci)
+- Include this copyright notice in all copies or substantial portions
+- Not misrepresent this work as their own original creation
+- Respect academic integrity standards when referencing this work
+
+**For Recruiters & Employers:**
+If you encounter this project in someone else's portfolio, please verify authenticity by:
+1. Checking the original repository's commit history
+2. Verifying the GitHub username matches the claimant
+3. Requesting explanation of specific technical implementation details
+4. Cross-referencing the project creation date with the candidate's timeline
+
+**Plagiarism Notice:**
+Unauthorized reproduction or misrepresentation of this work as original creation may violate:
+- Academic integrity policies
+- Professional ethics standards
+- GitHub Terms of Service
+- Intellectual property rights
+
+For questions about proper attribution or licensing, contact: github.com/TunahanKicci
+
 ## Acknowledgments
 
 - Yahoo Finance for market data API
