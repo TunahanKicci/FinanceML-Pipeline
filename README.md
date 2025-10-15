@@ -1,6 +1,6 @@
 # FinanceML Pipeline
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-TunahanKicci-blue)](https://github.com/TunahanKicci)
 [![Original Repo](https://img.shields.io/badge/Original-This%20Repo-green)](https://github.com/TunahanKicci/FinanceML-Pipeline)
 [![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202024-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
@@ -410,52 +410,62 @@ python update_cache.py
 - No sensitive data in logs
 - Dependency vulnerability scanning
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+**All Rights Reserved - Proprietary License**
+
+See the [LICENSE](LICENSE) file for complete terms.
 
 ### Copyright Notice
 
-**© 2025 Tunahan Kicci. All Rights Reserved.**
+**© 2024-2025 Tunahan Kicci. All Rights Reserved.**
 
-This project is the original work of Tunahan Kicci, developed as part of a computer science portfolio.
+This project and its source code are the exclusive property of Tunahan Kicci.
+
+**IMPORTANT - Usage Restrictions:**
+
+This code is made publicly visible for **viewing and reference purposes ONLY**. 
+
+**YOU MAY NOT:**
+- ❌ Copy, fork, or clone this code for your own projects
+- ❌ Modify or build upon this code
+- ❌ Use this code in personal or commercial applications
+- ❌ Present this work as your own in portfolios, resumes, or job applications
+- ❌ Redistribute or sell any part of this software
+
+**YOU MAY:**
+- ✅ View the code for educational purposes
+- ✅ Link to this repository with proper attribution
+- ✅ Study the implementation for learning
 
 **Project Authenticity:**
 - Original repository: [github.com/TunahanKicci/FinanceML-Pipeline](https://github.com/TunahanKicci/FinanceML-Pipeline)
-- First commit: Check repository history for verification
+- First commit: September 29, 2024 (verifiable in commit history)
 - Author: Tunahan Kicci ([@TunahanKicci](https://github.com/TunahanKicci))
-- Commit history and development timeline are publicly verifiable
-
-**Usage Rights:**
-While this project is open-source under MIT License, users must:
-- Provide proper attribution to the original author (Tunahan Kicci)
-- Include this copyright notice in all copies or substantial portions
-- Not misrepresent this work as their own original creation
-- Respect academic integrity standards when referencing this work
+- Development timeline: 50+ commits over 2+ months
 
 **For Recruiters & Employers:**
-If you encounter this project in someone else's portfolio, please verify authenticity by:
-1. Checking the original repository's commit history
-2. Verifying the GitHub username matches the claimant
-3. Requesting explanation of specific technical implementation details
-4. Cross-referencing the project creation date with the candidate's timeline
 
-**Plagiarism Notice:**
-Unauthorized reproduction or misrepresentation of this work as original creation may violate:
-- Academic integrity policies
-- Professional ethics standards
-- GitHub Terms of Service
-- Intellectual property rights
+If you encounter this project in someone else's portfolio or GitHub, please verify authenticity:
 
-For questions about proper attribution or licensing, contact: github.com/TunahanKicci
+1. **Check commit history**: Original has 50+ commits starting Sept 2024
+2. **Verify GitHub username**: Must be [@TunahanKicci](https://github.com/TunahanKicci)
+3. **Check repository creation date**: This repo was created in September 2024
+4. **Technical deep-dive**: Ask detailed questions about implementation (LSTM architecture, portfolio optimization algorithms, Docker configuration)
+5. **Compare commit timestamps**: Clones/forks will have recent creation dates
+
+**Legal Notice:**
+
+Unauthorized use, reproduction, or misrepresentation of this work may result in:
+- Violation of copyright law
+- Academic integrity violations (if used in educational context)
+- Professional misconduct (if presented in job applications)
+- GitHub Terms of Service violations
+- Potential legal action
+
+**License Inquiries:**
+
+For permission requests or licensing questions, contact via GitHub: [@TunahanKicci](https://github.com/TunahanKicci)
 
 ## Acknowledgments
 
