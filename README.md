@@ -1,5 +1,10 @@
 # FinanceML Pipeline
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub](https://img.shields.io/badge/GitHub-TunahanKicci-blue)](https://github.com/TunahanKicci)
+[![Original Repo](https://img.shields.io/badge/Original-This%20Repo-green)](https://github.com/TunahanKicci/FinanceML-Pipeline)
+[![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202024-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
+
 AI-powered stock market analysis and forecasting platform with production-ready MLOps infrastructure.
 
 ## Overview
