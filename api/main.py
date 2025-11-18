@@ -69,21 +69,20 @@ allowed_origins = [
     "http://localhost:3000",  # Local development
     "http://localhost:3001",  # Alternative local port
     "https://financeml-frontend.onrender.com",  # Render frontend
-    # Add your custom domain here when you have one:
-    # "https://yourdomain.me",
-    # "https://www.yourdomain.me",
+    "http://financeml-frontend.onrender.com",  # HTTP variant
 ]
 
-# In development, allow all origins
-if os.getenv("ENVIRONMENT") == "development":
+# In development or if CORS_ALLOW_ALL is set, allow all origins
+if os.getenv("ENVIRONMENT") == "development" or os.getenv("CORS_ALLOW_ALL") == "true":
     allowed_origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_credentials=False,  # Set to False for broader compatibility
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 

@@ -16,6 +16,8 @@ services:
         value: INFO
       - key: PORT
         value: 8000
+      - key: CORS_ALLOW_ALL
+        value: true
     # Auto-deploy on push
     autoDeploy: true
 
