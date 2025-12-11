@@ -1,13 +1,13 @@
 {
-  "timestamp": "2025-12-10T18:03:21.937535",
+  "timestamp": "2025-12-11T18:03:40.043998",
   "fundamentals": {
-    "PE_Ratio": 39.870632,
-    "Forward_PE": 41.922794,
+    "PE_Ratio": 40.256855,
+    "Forward_PE": 38.62216,
     "PEG_Ratio": null,
-    "Price_to_Book": 9.45993,
-    "Price_to_Sales": 1.2931229,
-    "EV_to_Revenue": 1.396,
-    "EV_to_EBITDA": 22.974,
+    "Price_to_Book": 9.551568,
+    "Price_to_Sales": 1.3056493,
+    "EV_to_Revenue": 1.374,
+    "EV_to_EBITDA": 22.624,
     "Profit_Margin": 0.03259,
     "Operating_Margin": 0.0373,
     "Gross_Margin": 0.24906999,
@@ -20,14 +20,14 @@
     "Earnings_Growth": 0.352,
     "EPS": 2.86,
     "Book_Value_Per_Share": 12.054,
-    "Dividend_Yield": 0.82,
+    "Dividend_Yield": 0.83,
     "Payout_Ratio": 0.3191,
-    "Market_Cap": 909144227840,
-    "Enterprise_Value": 981307424768,
+    "Market_Cap": 917951021056,
+    "Enterprise_Value": 966323470336,
     "Total_Debt": 68423999488,
     "Free_Cashflow": 10372750336,
     "Sector": "Consumer Defensive",
     "Industry": "Discount Stores",
-    "Company_Name": "Walmart Inc. Common Stock"
+    "Company_Name": "WALMART INC"
   }
 }
