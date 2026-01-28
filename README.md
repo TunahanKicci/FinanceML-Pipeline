@@ -16,7 +16,7 @@ FinanceML Pipeline is an end-to-end machine learning system that provides real-t
 
 **API Documentation:** [https://financeml-api.onrender.com/docs](https://financeml-api.onrender.com/docs)
 
-> **Note:** The application is hosted on Render's free tier. The first request after 15 minutes of inactivity may take 50-90 seconds to respond as the service spins up from sleep mode. Subsequent requests will be fast. This is a known limitation of free-tier hosting and does not reflect the application's actual performance capabilities.
+> **Note:** > ⚠️ **Geliştirme Notu:** Bu proje **yapay zeka (LLM)** araçları kullanılarak geliştirilmiştir. "vibe coding" yöntemleriyle oluşturulmuştur.
 
 ## Key Features
 
