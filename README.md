@@ -5,6 +5,7 @@
 [![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202025-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
 
 
+
 AI-powered stock market analysis and forecasting platform with production-ready MLOps infrastructure.
 
 ## Overview
