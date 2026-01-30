@@ -2,7 +2,6 @@
 
 [![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-TunahanKicci-blue)](https://github.com/TunahanKicci)
-[![Original Repo](https://img.shields.io/badge/Original-This%20Repo-green)](https://github.com/TunahanKicci/FinanceML-Pipeline)
 [![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202025-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
 
 
