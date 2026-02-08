@@ -1,40 +1,39 @@
-# FinanceML Pipeline
+# FinanceML Pipeline: AI-Assisted MLOps Architecture
 
-[![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-TunahanKicci-blue)](https://github.com/TunahanKicci)
-[![First Commit](https://img.shields.io/badge/First%20Commit-Sep%202025-orange)](https://github.com/TunahanKicci/FinanceML-Pipeline/commits/main)
+[![Status](https://img.shields.io/badge/Status-Architectural%20Prototype-orange)]()
 
+> ⚠️ **ARCHITECTURAL PROTOTYPE / CONCEPT STUDY**
+>
+> This project is an **experimental proof-of-concept** designed to explore modern MLOps architectures. 
+> It was developed using **AI-Assisted Development tools (Vibe Coding)** to simulate a production-grade environment.
+>
+> **Focus:** System Design, Pipeline Logic, and Tool Integration (Docker, FastAPI, PyTorch).
+> **Note:** Not intended for real-world financial trading.
 
+## 📖 Overview
 
-AI-powered stock market analysis and forecasting platform with production-ready MLOps infrastructure.
+FinanceML Pipeline is a conceptual **End-to-End Machine Learning System** designed to simulate stock market analysis workflows. It connects a Python-based ML backend with a React frontend, orchestrated via Docker.
 
-## Overview
+Instead of a live trading bot, this project serves as an **architectural study** to demonstrate how data flows from an API -> Cleaning -> Model (LSTM) -> API -> Dashboard in a modern DevOps environment.
 
-FinanceML Pipeline is an end-to-end machine learning system that provides real-time stock market analysis, price forecasting, risk assessment, and portfolio optimization. The platform leverages LSTM neural networks for time-series prediction and integrates with financial data APIs to deliver actionable insights.
-
-**Live Demo:** [https://financeml-frontend.onrender.com](https://financeml-frontend.onrender.com)
+**Live Concept Demo:** [https://financeml-frontend.onrender.com](https://financeml-frontend.onrender.com)
 
 **API Documentation:** [https://financeml-api.onrender.com/docs](https://financeml-api.onrender.com/docs)
 
-> **Note:** > ⚠️ **Geliştirme Notu:** Bu proje **yapay zeka (LLM)** araçları kullanılarak geliştirilmiştir. "vibe coding" yöntemleriyle oluşturulmuştur.
+## ⚡ Key Features (Designed & Prototyped)
 
-## Key Features
+### 🧠 Machine Learning Module
+- **Stock Price Forecasting:** LSTM-based predictions designed for time-series analysis.
+- **Technical Analysis:** Implementation of 20+ indicators (RSI, MACD) for feature engineering.
+- **Portfolio Optimization:** Conceptual application of Modern Portfolio Theory.
 
-### Core Functionality
-- **Stock Price Forecasting**: LSTM-based predictions with configurable forecast horizons
-- **Technical Analysis**: 20+ technical indicators including moving averages, RSI, MACD, Bollinger Bands
-- **Risk Analysis**: Real-time volatility metrics, VaR calculations, and Sharpe ratio
-- **Portfolio Optimization**: Modern Portfolio Theory implementation with efficient frontier analysis
-- **Sentiment Analysis**: News and social media sentiment integration
-- **Fundamental Analysis**: Company financials, ratios, and valuation metrics
-
-### Technical Capabilities
-- **Real-time Data Pipeline**: Automated cache system with daily updates
-- **RESTful API**: FastAPI-based backend with comprehensive endpoint coverage
-- **Interactive Frontend**: React-based dashboard with real-time visualizations
-- **Production Monitoring**: Prometheus metrics and Grafana dashboards
-- **CI/CD Pipeline**: Automated testing, building, and deployment workflows
-- **Docker Containerization**: Multi-service orchestration with Docker Compose
+### 🏗️ System Architecture & MLOps
+- **Microservices Simulation:** FastAPI backend decoupled from React frontend.
+- **Containerization:** Docker & Docker Compose setup to ensure environment consistency.
+- **CI/CD Logic:** GitHub Actions workflows configured to simulate automated testing and deployment.
+- **Monitoring Concept:** Prometheus & Grafana configurations for tracking system health.
 
 ## Architecture
 
